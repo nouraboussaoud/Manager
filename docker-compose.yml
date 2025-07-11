@@ -1,0 +1,33 @@
+services:
+  postges:
+    image: postgres:latest
+    container_name: postgres-na_manager
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/
+      POSTGRES_DB: na_manager
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/data/postgres
+    networks:
+        - na_manager_network
+    restart: unless-stopped
+  mail-dev:
+    image: maildev/maildev
+    container_name: maildev-na_manager
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+    networks:
+        - na_manager_network
+    restart: unless-stopped
+
+networks:
+    na_manager_network:
+        driver: bridge
+
+volumes:
+    postgres:
+        driver: local
