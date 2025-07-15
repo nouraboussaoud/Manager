@@ -16,15 +16,15 @@ spring:
   mail:
     host: localhost
     port: 1025
-    username: nour
-    password: nour
+    username: ""
+    password: ""
     properties:
       mail:
         smtp:
           trust: "*"
         auth: true
         starttls:
-          enable: true
+          enable: false
         connectiontimeout: 5000
         timeout: 3000
         write-timeout: 5000
@@ -32,5 +32,10 @@ spring:
 application:
   security:
     jwt:
-      secret-key: 824485CF87AEBB1468767FA46ED17
+      secret-key: 824485CF87AEBB1468767FA46ED17D9C4F55B6A7E1234567890ABCDEF1234567
       expiration: 8640000
+  mailing:
+    frontend:
+      activation-url: http://localhost:4200/activate-account
+server:
+  port: 9090

@@ -1,5 +1,5 @@
 services:
-  postges:
+  postgres:
     image: postgres:latest
     container_name: postgres-na_manager
     environment:
@@ -12,7 +12,7 @@ services:
     volumes:
       - postgres:/data/postgres
     networks:
-        - na_manager_network
+      - na_manager_network
     restart: unless-stopped
   mail-dev:
     image: maildev/maildev
@@ -21,13 +21,13 @@ services:
       - "1080:1080"
       - "1025:1025"
     networks:
-        - na_manager_network
+      - na_manager_network
     restart: unless-stopped
 
 networks:
-    na_manager_network:
-        driver: bridge
+  na_manager_network:
+    driver: bridge
 
 volumes:
-    postgres:
-        driver: local
+  postgres:
+    driver: local
