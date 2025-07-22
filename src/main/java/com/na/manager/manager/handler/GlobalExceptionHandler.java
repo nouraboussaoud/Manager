@@ -1,6 +1,7 @@
 package com.na.manager.manager.handler;
 
 import jakarta.mail.MessagingException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -8,6 +9,7 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import jakarta.validation.ConstraintViolationException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -40,7 +42,6 @@ public class GlobalExceptionHandler {
                         .error(exp.getMessage())
                         .build());
 
-
     }
 
     @ExceptionHandler(BadCredentialsException.class)
@@ -70,7 +71,7 @@ public class GlobalExceptionHandler {
         exp.getBindingResult().getAllErrors()
                 .forEach(error -> {
                     var errorMessage = error.getDefaultMessage();
-                    errors.add(errorMessage);
+                    errors.add(errorMessage.trim().toLowerCase());
                 });
         return ResponseEntity
                 .status(BAD_REQUEST)
@@ -80,5 +81,47 @@ public class GlobalExceptionHandler {
 
 
     }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionResponse> handleException(Exception exp) {
+        ///log the exception
+        exp.printStackTrace();
+        return ResponseEntity
+                .status(INTERNAL_SERVER_ERROR)
+                .body(ExceptionResponse.builder()
+                        .businessErrorDescription("Internel error , contact the admin ")
+                        .error(exp.getMessage())
+                        .build());
 
+
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ExceptionResponse> handleException(DataIntegrityViolationException exp) {
+        String message = "A data conflict occurred.";
+        
+        if (exp.getMessage().contains("email")) {
+            message = "An account with this email address already exists.";
+        } else if (exp.getMessage().contains("Keycloak")) {
+            message = "A user with this email already exists in Keycloak.";
+        }
+        
+        return ResponseEntity
+                .status(CONFLICT)
+                .body(ExceptionResponse.builder()
+                        .businessErrorCode(409)
+                        .businessErrorDescription(message)
+                        .error("Duplicate entry")
+                        .build());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ExceptionResponse> handleException(ConstraintViolationException exp) {
+        return ResponseEntity
+                .status(BAD_REQUEST)
+                .body(ExceptionResponse.builder()
+                        .businessErrorCode(400)
+                        .businessErrorDescription("Please check your input and try again.")
+                        .error("Validation failed")
+                        .build());
+    }
 }

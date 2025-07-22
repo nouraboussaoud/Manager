@@ -37,5 +37,30 @@ application:
   mailing:
     frontend:
       activation-url: http://localhost:4200/activate-account
+
 server:
   port: 9090
+
+# Keycloak Configuration
+keycloak:
+  auth-server-url: http://localhost:8180  # Remove /auth for newer Keycloak versions (17+)
+  realm: manager-realm  # Replace with your actual realm name
+  resource: manager-app  # Your client ID
+  credentials:
+    secret: jNFH7asbDmE8HCt9vJU5mCm5Wtga8QC2  # Replace with your actual client secret
+  admin-username: admin  # Keycloak admin username
+  admin-password: admin  # Keycloak admin password
+  public-client: false
+  bearer-only: false
+  use-resource-role-mappings: true
+  ssl-required: external
+  confidential-port: 0
+
+# Logging configuration
+logging:
+  level:
+    com.na.manager.manager.keycloak: DEBUG
+    org.keycloak: INFO
+    javax.ws.rs: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

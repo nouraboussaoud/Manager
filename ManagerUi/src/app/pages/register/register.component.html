@@ -1,0 +1,102 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h3>Create Account</h3>
+      <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">Join us today</p>
+    </div>
+    
+    <div class="auth-body">
+      <form clrForm (ngSubmit)="register()" #registerForm="ngForm">
+        <div class="clr-row">
+          <div class="clr-col-6">
+            <clr-input-container>
+              <label>First Name</label>
+              <input 
+                clrInput 
+                type="text" 
+                name="firstname"
+                [(ngModel)]="registerRequest.firstname"
+                required
+                class="form-control"
+                placeholder="First name"
+                #firstname="ngModel" />
+              <clr-control-error *clrIfError="'required'">First name is required</clr-control-error>
+            </clr-input-container>
+          </div>
+          
+          <div class="clr-col-6">
+            <clr-input-container>
+              <label>Last Name</label>
+              <input 
+                clrInput 
+                type="text" 
+                name="lastname"
+                [(ngModel)]="registerRequest.lastname"
+                required
+                class="form-control"
+                placeholder="Last name"
+                #lastname="ngModel" />
+              <clr-control-error *clrIfError="'required'">Last name is required</clr-control-error>
+            </clr-input-container>
+          </div>
+        </div>
+
+        <clr-input-container>
+          <label>Email Address</label>
+          <input 
+            clrInput 
+            type="email" 
+            name="email"
+            [(ngModel)]="registerRequest.email"
+            required
+            email
+            class="form-control"
+            placeholder="Enter your email"
+            #email="ngModel" />
+          <clr-control-error *clrIfError="'required'">Email is required</clr-control-error>
+          <clr-control-error *clrIfError="'email'">Please enter a valid email</clr-control-error>
+        </clr-input-container>
+
+        <clr-password-container>
+          <label>Password</label>
+          <input 
+            clrPassword 
+            name="password"
+            [(ngModel)]="registerRequest.password"
+            required
+            minlength="8"
+            class="form-control"
+            placeholder="Create a strong password"
+            #password="ngModel" />
+          <clr-control-error *clrIfError="'required'">Password is required</clr-control-error>
+          <clr-control-error *clrIfError="'minlength'">Password must be at least 8 characters</clr-control-error>
+        </clr-password-container>
+
+        <div *ngIf="errorMsg.length > 0" class="custom-alert alert-danger">
+          <div *ngFor="let error of errorMsg" class="error-message">
+            <clr-icon shape="exclamation-triangle"></clr-icon>
+            <span>{{ error }}</span>
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          class="btn btn-primary btn-block"
+          [class.loading-overlay]="isLoading"
+          [disabled]="registerForm.invalid || isLoading">
+          <clr-spinner *ngIf="isLoading" clrInline clrSmall></clr-spinner>
+          <span *ngIf="!isLoading">Create Account</span>
+          <span *ngIf="isLoading">Creating Account...</span>
+        </button>
+      </form>
+
+      <div class="text-center mt-2">
+        <p>Already have an account? 
+          <a href="javascript:void(0)" (click)="login()" class="auth-link">Sign in here</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+

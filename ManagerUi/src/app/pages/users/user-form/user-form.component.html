@@ -1,0 +1,61 @@
+<div class="content-container">
+  <div class="content-area">
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-8 clr-offset-md-2">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">{{isEditMode ? 'Edit' : 'Create'}} User</h2>
+          </div>
+          <div class="card-block">
+            <div *ngIf="loading" class="loading-overlay">
+              <span class="spinner spinner-md"></span>
+            </div>
+            
+            <form clrForm (ngSubmit)="saveUser()" #userForm="ngForm">
+              <div class="clr-row">
+                <div class="clr-col-12 clr-col-md-6">
+                  <clr-input-container>
+                    <label>First Name</label>
+                    <input 
+                      clrInput 
+                      type="text" 
+                      name="firstName"
+                      [(ngModel)]="user.firstName"
+                      required
+                      class="form-control"
+                      placeholder="First name"
+                      #firstName="ngModel" />
+                    <clr-control-error *clrIfError="'required'">First name is required</clr-control-error>
+                  </clr-input-container>
+                </div>
+                
+                <div class="clr-col-12 clr-col-md-6">
+                  <clr-input-container>
+                    <label>Last Name</label>
+                    <input 
+                      clrInput 
+                      type="text" 
+                      name="lastName"
+                      [(ngModel)]="user.lastName"
+                      required
+                      class="form-control"
+                      placeholder="Last name"
+                      #lastName="ngModel" />
+                    <clr-control-error *clrIfError="'required'">Last name is required</clr-control-error>
+                  </clr-input-container>
+                </div>
+              </div>
+
+              <clr-input-container>
+                <label>Email Address</label>
+                <input 
+                  clrInput 
+                  type="email" 
+                  name="email"
+                  [(ngModel)]="user.email"
+                  required
+                  email
+                  class="form-control"
+                  placeholder="Enter email address"
+                  #email="ngModel" />
+                <clr-

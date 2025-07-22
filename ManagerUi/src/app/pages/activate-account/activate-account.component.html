@@ -1,0 +1,99 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <clr-icon shape="shield-check" size="48" style="margin-bottom: 1rem;"></clr-icon>
+      <h3>Account Activation</h3>
+      <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">Verify your email address</p>
+    </div>
+    
+    <div class="auth-body">
+      <div *ngIf="!submitted">
+        <div class="activation-intro">
+          <div class="email-icon-container">
+            <clr-icon shape="email" size="64"></clr-icon>
+          </div>
+          <h4>Check Your Email</h4>
+          <p class="activation-description">
+            We've sent a 6-digit verification code to your email address. 
+            Please enter it below to activate your account.
+          </p>
+        </div>
+        
+        <form clrForm class="activation-form">
+          <div class="code-input-section">
+            <label class="code-label">Verification Code</label>
+            <input 
+              clrInput 
+              type="text"
+              [(ngModel)]="token"
+              name="token"
+              maxlength="6"
+              placeholder="000000"
+              class="activation-input"
+              (input)="onCodeCompleted()" 
+              (keyup.enter)="onCodeCompleted()" />
+            <p class="code-helper">Enter the 6-digit code from your email</p>
+          </div>
+
+          <button
+            type="button"
+            class="btn btn-primary btn-block activation-btn"
+            [class.loading]="isLoading"
+            [disabled]="token.length !== 6 || isLoading"
+            (click)="onCodeCompleted()">
+            <clr-spinner *ngIf="isLoading" clrInline clrSmall></clr-spinner>
+            <clr-icon *ngIf="!isLoading" shape="check" style="margin-right: 0.5rem;"></clr-icon>
+            <span *ngIf="!isLoading">Activate Account</span>
+            <span *ngIf="isLoading">Activating...</span>
+          </button>
+        </form>
+
+        <div class="resend-section">
+          <p class="resend-text">Didn't receive the code?</p>
+          <button type="button" class="btn btn-link resend-btn" (click)="resendCode()">
+            <clr-icon shape="refresh"></clr-icon>
+            Resend Code
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="submitted" class="result-section">
+        <div class="result-icon" [class.success]="isOkay" [class.error]="!isOkay">
+          <clr-icon 
+            [attr.shape]="isOkay ? 'check-circle' : 'exclamation-triangle'"
+            size="72">
+          </clr-icon>
+        </div>
+        
+        <h4 class="result-title" [class.success]="isOkay" [class.error]="!isOkay">
+          {{ isOkay ? 'Account Activated!' : 'Activation Failed' }}
+        </h4>
+        
+        <div class="result-message" [class.success]="isOkay" [class.error]="!isOkay">
+          {{ message }}
+        </div>
+        
+        <div class="result-actions">
+          <button 
+            *ngIf="isOkay"
+            type="button"
+            class="btn btn-primary btn-success"
+            (click)="redirectToLogin()">
+            <clr-icon shape="login" style="margin-right: 0.5rem;"></clr-icon>
+            Continue to Login
+          </button>
+          
+          <button 
+            *ngIf="!isOkay"
+            type="button"
+            class="btn btn-primary"
+            (click)="tryAgain()">
+            <clr-icon shape="refresh" style="margin-right: 0.5rem;"></clr-icon>
+            Try Again
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

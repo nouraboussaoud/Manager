@@ -1,0 +1,79 @@
+<div class="content-container">
+  <div class="content-area">
+    <div class="clr-row">
+      <div class="clr-col-12">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">User Management</h2>
+            <div class="card-actions">
+              <div class="search-container">
+                <clr-input-container>
+                  <input clrInput type="text" [(ngModel)]="searchQuery" placeholder="Search users..." (keyup.enter)="searchUsers()"/>
+                  <button class="btn btn-icon" (click)="searchUsers()">
+                    <clr-icon shape="search"></clr-icon>
+                  </button>
+                </clr-input-container>
+              </div>
+              <button class="btn btn-primary" (click)="createUser()">
+                <clr-icon shape="plus"></clr-icon> Create User
+              </button>
+            </div>
+          </div>
+          <div class="card-block">
+            <clr-datagrid [clrDgLoading]="loading">
+              <clr-dg-column [clrDgField]="'firstName'">First Name</clr-dg-column>
+              <clr-dg-column [clrDgField]="'lastName'">Last Name</clr-dg-column>
+              <clr-dg-column [clrDgField]="'email'">Email</clr-dg-column>
+              <clr-dg-column [clrDgField]="'enabled'">Status</clr-dg-column>
+              <clr-dg-column>Actions</clr-dg-column>
+
+              <clr-dg-row *ngFor="let user of users">
+                <clr-dg-cell>{{user.firstName}}</clr-dg-cell>
+                <clr-dg-cell>{{user.lastName}}</clr-dg-cell>
+                <clr-dg-cell>{{user.email}}</clr-dg-cell>
+                <clr-dg-cell>
+                  <span class="label" [ngClass]="user.enabled ? 'label-success' : 'label-danger'">
+                    {{user.enabled ? 'Active' : 'Inactive'}}
+                  </span>
+                </clr-dg-cell>
+                <clr-dg-cell>
+                  <div class="btn-group">
+                    <button class="btn btn-sm btn-icon" (click)="editUser(user)" title="Edit">
+                      <clr-icon shape="pencil"></clr-icon>
+                    </button>
+                    <button class="btn btn-sm btn-icon" (click)="toggleUserStatus(user)" title="Toggle status">
+                      <clr-icon [attr.shape]="user.enabled ? 'ban' : 'check'"></clr-icon>
+                    </button>
+                    <button class="btn btn-sm btn-icon btn-danger" (click)="confirmDelete(user)" title="Delete">
+                      <clr-icon shape="trash"></clr-icon>
+                    </button>
+                  </div>
+                </clr-dg-cell>
+              </clr-dg-row>
+
+              <clr-dg-footer>
+                <clr-dg-pagination #pagination [clrDgTotalItems]="users.length">
+                  <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Users per page</clr-dg-page-size>
+                  {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} users
+                </clr-dg-pagination>
+              </clr-dg-footer>
+            </clr-datagrid>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation Modal -->
+<clr-modal [(clrModalOpen)]="confirmModal" [clrModalSize]="'sm'">
+  <h3 class="modal-title">Confirm Delete</h3>
+  <div class="modal-body">
+    <p>Are you sure you want to delete user <strong>{{selectedUser?.firstName}} {{selectedUser?.lastName}}</strong>?</p>
+    <p class="text-danger">This action cannot be undone.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="confirmModal = false">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="deleteUser()">Delete</button>
+  </div>
+</clr-modal>

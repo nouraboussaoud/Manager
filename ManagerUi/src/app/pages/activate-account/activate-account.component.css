@@ -1,0 +1,349 @@
+/* Component-specific styles if needed */
+.auth-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-width: 480px;
+  width: 100%;
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-header {
+  text-align: center;
+  padding: 40px 30px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  position: relative;
+}
+
+.auth-header::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 20px solid #764ba2;
+}
+
+.auth-header h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.auth-header p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 1rem;
+}
+
+.auth-body {
+  padding: 40px 30px;
+}
+
+/* Activation Intro Section */
+.activation-intro {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.email-icon-container {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.email-icon-container clr-icon {
+  color: white;
+}
+
+.activation-intro h4 {
+  color: #2c3e50;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+
+.activation-description {
+  color: #7f8c8d;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Code Input Section */
+.code-input-section {
+  margin-bottom: 25px;
+}
+
+.code-label {
+  display: block;
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.activation-input {
+  width: 100%;
+  padding: 16px 20px;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 4px;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+.activation-input:focus {
+  outline: none;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  transform: translateY(-2px);
+}
+
+.code-helper {
+  color: #6c757d;
+  font-size: 0.85rem;
+  margin: 8px 0 0 0;
+  text-align: center;
+}
+
+/* Activation Button */
+.activation-btn {
+  width: 100%;
+  padding: 16px 24px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.activation-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.activation-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.activation-btn.loading {
+  pointer-events: none;
+}
+
+/* Resend Section */
+.resend-section {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #e9ecef;
+}
+
+.resend-text {
+  color: #6c757d;
+  margin: 0 0 12px 0;
+  font-size: 0.9rem;
+}
+
+.resend-btn {
+  background: none;
+  border: none;
+  color: #667eea;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.resend-btn:hover {
+  background: rgba(102, 126, 234, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Result Section */
+.result-section {
+  text-align: center;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.result-icon {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 25px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: scaleIn 0.6s ease-out;
+}
+
+.result-icon.success {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+}
+
+.result-icon.error {
+  background: linear-gradient(135deg, #dc3545, #e74c3c);
+  box-shadow: 0 8px 25px rgba(220, 53, 69, 0.3);
+}
+
+.result-icon clr-icon {
+  color: white;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.result-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 15px 0;
+}
+
+.result-title.success {
+  color: #28a745;
+}
+
+.result-title.error {
+  color: #dc3545;
+}
+
+.result-message {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 30px 0;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.result-message.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.result-message.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Result Actions */
+.result-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .auth-card {
+    margin: 20px;
+    max-width: none;
+  }
+  
+  .auth-header {
+    padding: 30px 20px 15px;
+  }
+  
+  .auth-body {
+    padding: 30px 20px;
+  }
+  
+  .email-icon-container {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .activation-input {
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+  }
+  
+  .result-icon {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-header h3 {
+    font-size: 1.5rem;
+  }
+  
+  .activation-intro h4 {
+    font-size: 1.2rem;
+  }
+  
+  .activation-input {
+    font-size: 1rem;
+    letter-spacing: 2px;
+  }
+}
+

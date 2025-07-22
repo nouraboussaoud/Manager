@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,29 +26,33 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(withDefaults())
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(req ->
-                        req.requestMatchers(
-                                         "/auth/**",
-                                         "/v2/api-docs",
-                                         "/v3/api-docs" ,
-                                         "/v3/api-docs/**" ,
-                                         "/swagger-resources" ,
-                                         "/swagger-resources/**",
-                                         "/swagger-ui.html",
-                                         "/swagger-ui/**",
-                                         "/webjars/**",
-                                         "/configuration/ui",
-                                         "/configuration/security"
-                                        )
-                                .permitAll()
-                                        .anyRequest()
-                                            .authenticated()
-                )
+                .authorizeHttpRequests(req -> {
+                    System.out.println("Configuring security rules...");
+                    req.requestMatchers(
+                                     "/auth/**",
+                                     "/api/v1/auth/**",
+                                     "/v2/api-docs",
+                                     "/v3/api-docs" ,
+                                     "/v3/api-docs/**" ,
+                                     "/swagger-resources" ,
+                                     "/swagger-resources/**",
+                                     "/swagger-ui.html",
+                                     "/swagger-ui/**",
+                                     "/webjars/**",
+                                     "/configuration/ui",
+                                     "/configuration/security"
+                                    )
+                            .permitAll()
+                            .requestMatchers("/api/v1/users/**")
+                            .permitAll() // Temporarily allow all access for testing
+                            .anyRequest()
+                                .authenticated();
+                })
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter , UsernamePasswordAuthenticationFilter.class) ;
+                .addFilterBefore(jwtAuthFilter , UsernamePasswordAuthenticationFilter.class);
            return http.build();
          }
 

@@ -28,7 +28,15 @@ public class ManagerApplication {
                                 .build()
                 );
             }
+            if (roleRepository.findByName("ADMIN").isEmpty()){
+                roleRepository.save(
+                        Role.builder()
+                                .name("ADMIN")
+                                .build()
+                );
+            }
         };
     }
 
 }
+

@@ -1,0 +1,60 @@
+<!-- Password Strength Indicator for Strong Passwords -->
+<div *ngIf="type === 'password' && value && isStrongPasswordField" 
+     class="password-strength strong-password">
+  
+  <!-- Strength Meter -->
+  <div class="strength-meter">
+    <div class="strength-label">Password Strength: 
+      <span [style.color]="passwordStrength.color">{{ passwordStrength.label }}</span>
+    </div>
+    <div class="strength-bar">
+      <div class="strength-fill" 
+           [style.width.%]="(passwordStrength.score / 10) * 100"
+           [style.background-color]="passwordStrength.color">
+      </div>
+    </div>
+  </div>
+
+  <!-- Requirements Checklist -->
+  <div class="strength-requirements strong-requirements">
+    <div [class.met]="strongPasswordErrors.isValidLength">
+      <clr-icon [shape]="strongPasswordErrors.isValidLength ? 'check' : 'times'"></clr-icon>
+      At least 12 characters
+    </div>
+    <div [class.met]="strongPasswordErrors.hasUpper">
+      <clr-icon [shape]="strongPasswordErrors.hasUpper ? 'check' : 'times'"></clr-icon>
+      One uppercase letter (A-Z)
+    </div>
+    <div [class.met]="strongPasswordErrors.hasLower">
+      <clr-icon [shape]="strongPasswordErrors.hasLower ? 'check' : 'times'"></clr-icon>
+      One lowercase letter (a-z)
+    </div>
+    <div [class.met]="strongPasswordErrors.hasNumber">
+      <clr-icon [shape]="strongPasswordErrors.hasNumber ? 'check' : 'times'"></clr-icon>
+      One number (0-9)
+    </div>
+    <div [class.met]="strongPasswordErrors.hasSpecial">
+      <clr-icon [shape]="strongPasswordErrors.hasSpecial ? 'check' : 'times'"></clr-icon>
+      One special character (@$!%*?&)
+    </div>
+    <div [class.met]="strongPasswordErrors.hasNoSpaces">
+      <clr-icon [shape]="strongPasswordErrors.hasNoSpaces ? 'check' : 'times'"></clr-icon>
+      No spaces allowed
+    </div>
+    <div [class.met]="strongPasswordErrors.hasNoCommonPatterns">
+      <clr-icon [shape]="strongPasswordErrors.hasNoCommonPatterns ? 'check' : 'times'"></clr-icon>
+      No common patterns (123456, password, etc.)
+    </div>
+  </div>
+
+  <!-- Security Tips -->
+  <div class="password-tips">
+    <h5>💡 Tips for a strong password:</h5>
+    <ul>
+      <li>Use a mix of letters, numbers, and symbols</li>
+      <li>Avoid personal information (name, birthday)</li>
+      <li>Don't use common words or patterns</li>
+      <li>Consider using a passphrase with special characters</li>
+    </ul>
+  </div>
+</div>

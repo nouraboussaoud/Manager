@@ -1,0 +1,66 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h3>Welcome Back</h3>
+      <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">Sign in to your account</p>
+    </div>
+    
+    <div class="auth-body">
+      <form clrForm (ngSubmit)="login()" #loginForm="ngForm">
+        <clr-input-container>
+          <label>Email Address</label>
+          <input 
+            clrInput 
+            type="email" 
+            name="email"
+            [(ngModel)]="authRequest.email"
+            required
+            email
+            class="form-control"
+            placeholder="Enter your email"
+            #email="ngModel" />
+          <clr-control-error *clrIfError="'required'">Email is required</clr-control-error>
+          <clr-control-error *clrIfError="'email'">Please enter a valid email</clr-control-error>
+        </clr-input-container>
+
+        <clr-password-container>
+          <label>Password</label>
+          <input 
+            clrPassword 
+            name="password"
+            [(ngModel)]="authRequest.password"
+            required
+            minlength="8"
+            class="form-control"
+            placeholder="Enter your password"
+            #password="ngModel" />
+          <clr-control-error *clrIfError="'required'">Password is required</clr-control-error>
+          <clr-control-error *clrIfError="'minlength'">Password must be at least 8 characters</clr-control-error>
+        </clr-password-container>
+
+        <div *ngIf="errorMsg.length > 0" class="custom-alert alert-danger">
+          <div *ngFor="let error of errorMsg">
+            <clr-icon shape="exclamation-triangle"></clr-icon>
+            {{ error }}
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          class="btn btn-primary btn-block"
+          [class.loading-overlay]="isLoading"
+          [disabled]="loginForm.invalid || isLoading">
+          <clr-spinner *ngIf="isLoading" clrInline clrSmall></clr-spinner>
+          <span *ngIf="!isLoading">Sign In</span>
+          <span *ngIf="isLoading">Signing In...</span>
+        </button>
+      </form>
+
+      <div class="text-center mt-2">
+        <p>Don't have an account? 
+          <a href="javascript:void(0)" (click)="register()" class="auth-link">Create one here</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
