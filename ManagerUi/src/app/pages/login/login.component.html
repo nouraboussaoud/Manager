@@ -23,20 +23,32 @@
           <clr-control-error *clrIfError="'email'">Please enter a valid email</clr-control-error>
         </clr-input-container>
 
-        <clr-password-container>
-          <label>Password</label>
-          <input 
-            clrPassword 
-            name="password"
-            [(ngModel)]="authRequest.password"
-            required
-            minlength="8"
-            class="form-control"
-            placeholder="Enter your password"
-            #password="ngModel" />
-          <clr-control-error *clrIfError="'required'">Password is required</clr-control-error>
-          <clr-control-error *clrIfError="'minlength'">Password must be at least 8 characters</clr-control-error>
-        </clr-password-container>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="password-input">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              name="password"
+              [(ngModel)]="authRequest.password"
+              class="form-control"
+              placeholder="Enter your password"
+              required
+              #password="ngModel"
+            />
+            <button
+              type="button"
+              class="password-toggle"
+              (click)="showPassword = !showPassword"
+              [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+            >
+              <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+            </button>
+          </div>
+          <div *ngIf="password.invalid && password.touched" class="error-message">
+            Password is required
+          </div>
+        </div>
 
         <div *ngIf="errorMsg.length > 0" class="custom-alert alert-danger">
           <div *ngFor="let error of errorMsg">
@@ -64,3 +76,5 @@
     </div>
   </div>
 </div>
+
+

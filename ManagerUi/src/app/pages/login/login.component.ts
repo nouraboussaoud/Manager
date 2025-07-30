@@ -30,6 +30,7 @@ export class LoginComponent {
 
   errorMsg: string[] = [];
   isLoading = false;
+  showPassword = false;
 
   constructor(
     private router: Router,
@@ -56,6 +57,7 @@ export class LoginComponent {
     this.router.navigate(['register']);
   }
 }
+
 
 
 

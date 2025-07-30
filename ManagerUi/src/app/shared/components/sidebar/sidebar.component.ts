@@ -9,48 +9,62 @@ import { Router, RouterModule } from '@angular/router';
   template: `
     <div class="sidebar" [class.collapsed]="isCollapsed">
       <div class="sidebar-header">
-        <div class="logo">
-          <i class="fas fa-users-cog"></i>
-          <span *ngIf="!isCollapsed">Manager</span>
+        <div class="logo-container">
+          <div class="logo-icon">
+            <i class="fas fa-users-cog"></i>
+          </div>
+          <span class="logo-text" *ngIf="!isCollapsed">Manager</span>
         </div>
         <button class="toggle-btn" (click)="toggleSidebar()">
-          <i class="fas" [class.fa-bars]="isCollapsed" [class.fa-times]="!isCollapsed"></i>
+          <i class="fas fa-bars" *ngIf="isCollapsed"></i>
+          <i class="fas fa-times" *ngIf="!isCollapsed"></i>
         </button>
       </div>
       
       <nav class="sidebar-nav">
-        <ul>
-          <li>
-            <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+        <div class="nav-item">
+          <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+            <div class="nav-icon">
               <i class="fas fa-tachometer-alt"></i>
-              <span *ngIf="!isCollapsed">Dashboard</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/users" routerLinkActive="active" class="nav-link">
+            </div>
+            <span class="nav-text" *ngIf="!isCollapsed">Dashboard</span>
+          </a>
+        </div>
+        
+        <div class="nav-item">
+          <a routerLink="/users" routerLinkActive="active" class="nav-link">
+            <div class="nav-icon">
               <i class="fas fa-users"></i>
-              <span *ngIf="!isCollapsed">Users</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/profile" routerLinkActive="active" class="nav-link">
+            </div>
+            <span class="nav-text" *ngIf="!isCollapsed">Users</span>
+          </a>
+        </div>
+        
+        <div class="nav-item">
+          <a routerLink="/profile" routerLinkActive="active" class="nav-link">
+            <div class="nav-icon">
               <i class="fas fa-user"></i>
-              <span *ngIf="!isCollapsed">Profile</span>
-            </a>
-          </li>
-          <li>
-            <a routerLink="/settings" routerLinkActive="active" class="nav-link">
+            </div>
+            <span class="nav-text" *ngIf="!isCollapsed">Profile</span>
+          </a>
+        </div>
+        
+        <div class="nav-item">
+          <a routerLink="/settings" routerLinkActive="active" class="nav-link">
+            <div class="nav-icon">
               <i class="fas fa-cog"></i>
-              <span *ngIf="!isCollapsed">Settings</span>
-            </a>
-          </li>
-        </ul>
+            </div>
+            <span class="nav-text" *ngIf="!isCollapsed">Settings</span>
+          </a>
+        </div>
       </nav>
       
       <div class="sidebar-footer">
         <button class="logout-btn" (click)="logout()">
-          <i class="fas fa-sign-out-alt"></i>
-          <span *ngIf="!isCollapsed">Logout</span>
+          <div class="logout-icon">
+            <i class="fas fa-sign-out-alt"></i>
+          </div>
+          <span class="logout-text" *ngIf="!isCollapsed">Logout</span>
         </button>
       </div>
     </div>
@@ -61,125 +75,177 @@ import { Router, RouterModule } from '@angular/router';
       left: 0;
       top: 0;
       height: 100vh;
-      width: 250px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      width: 260px;
+      background: #ffffff;
       transition: width 0.3s ease;
       z-index: 1000;
       display: flex;
       flex-direction: column;
       box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      border-right: 1px solid #e5e7eb;
     }
     
     .sidebar.collapsed {
-      width: 70px;
+      width: 80px;
     }
     
     .sidebar-header {
-      padding: 20px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      height: 70px;
+      padding: 0 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      border-bottom: 1px solid #f1f5f9;
+      background: #fafbfc;
     }
     
-    .logo {
+    .logo-container {
       display: flex;
       align-items: center;
-      font-size: 1.5rem;
-      font-weight: bold;
+      gap: 12px;
     }
     
-    .logo i {
-      margin-right: 10px;
-      font-size: 1.8rem;
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #3b82f6;
+      border-radius: 10px;
+      color: white;
+      font-size: 18px;
+    }
+    
+    .logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1f2937;
     }
     
     .toggle-btn {
-      background: none;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f3f4f6;
       border: none;
-      color: white;
-      font-size: 1.2rem;
+      border-radius: 8px;
+      color: #6b7280;
       cursor: pointer;
-      padding: 5px;
-      border-radius: 4px;
-      transition: background-color 0.3s;
+      transition: all 0.2s;
     }
     
     .toggle-btn:hover {
-      background-color: rgba(255,255,255,0.1);
+      background: #e5e7eb;
+      color: #374151;
     }
     
     .sidebar-nav {
       flex: 1;
       padding: 20px 0;
+      overflow-y: auto;
     }
     
-    .sidebar-nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    
-    .sidebar-nav li {
-      margin-bottom: 5px;
+    .nav-item {
+      margin-bottom: 8px;
+      padding: 0 16px;
     }
     
     .nav-link {
       display: flex;
       align-items: center;
-      padding: 15px 20px;
-      color: rgba(255,255,255,0.8);
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 12px;
       text-decoration: none;
-      transition: all 0.3s;
-      border-left: 3px solid transparent;
+      color: #6b7280;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    
+    .nav-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: #f8fafc;
+      color: #6b7280;
+      font-size: 16px;
+      transition: all 0.2s;
+    }
+    
+    .nav-text {
+      font-size: 15px;
+      white-space: nowrap;
     }
     
     .nav-link:hover {
-      background-color: rgba(255,255,255,0.1);
-      color: white;
-      border-left-color: #fff;
+      background: #f1f5f9;
+    }
+    
+    .nav-link:hover .nav-icon {
+      background: #e0e7ff;
+      color: #3b82f6;
     }
     
     .nav-link.active {
-      background-color: rgba(255,255,255,0.2);
-      color: white;
-      border-left-color: #fff;
+      background: #eff6ff;
+      color: #1e40af;
     }
     
-    .nav-link i {
-      margin-right: 15px;
-      font-size: 1.2rem;
-      width: 20px;
-      text-align: center;
+    .nav-link.active .nav-icon {
+      background: #3b82f6;
+      color: white;
     }
     
     .sidebar-footer {
-      padding: 20px;
-      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 20px 16px;
+      border-top: 1px solid #f1f5f9;
     }
     
     .logout-btn {
+      width: 100%;
       display: flex;
       align-items: center;
-      width: 100%;
-      padding: 15px 20px;
-      background: rgba(255,255,255,0.1);
-      border: none;
-      color: white;
-      border-radius: 8px;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 12px;
+      color: #dc2626;
       cursor: pointer;
-      transition: background-color 0.3s;
-      font-size: 1rem;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    
+    .logout-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: #fee2e2;
+      color: #dc2626;
+      font-size: 16px;
+    }
+    
+    .logout-text {
+      font-size: 15px;
+      white-space: nowrap;
     }
     
     .logout-btn:hover {
-      background: rgba(255,255,255,0.2);
+      background: #fee2e2;
+      border-color: #fca5a5;
     }
     
-    .logout-btn i {
-      margin-right: 15px;
-      font-size: 1.2rem;
+    .logout-btn:hover .logout-icon {
+      background: #fecaca;
     }
   `]
 })
@@ -193,7 +259,17 @@ export class SidebarComponent {
   }
 
   logout() {
-    localStorage.removeItem('token');
+    // Add logout logic here
     this.router.navigate(['/login']);
   }
 }
+
+
+
+
+
+
+
+
+
+

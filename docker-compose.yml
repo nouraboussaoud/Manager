@@ -17,6 +17,7 @@ services:
   mail-dev:
     image: maildev/maildev
     container_name: maildev-na_manager
+    command: ["maildev", "--web", "1080", "--smtp", "1025", "--hide-extensions", "STARTTLS"]
     ports:
       - "1080:1080"
       - "1025:1025"

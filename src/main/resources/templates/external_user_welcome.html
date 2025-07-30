@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Manager System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #007bff;
+        }
+        .header h1 {
+            color: #007bff;
+            margin: 0;
+        }
+        .content {
+            margin-bottom: 30px;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #666;
+        }
+        .info-box {
+            background-color: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to Manager System</h1>
+        </div>
+        
+        <div class="content">
+            <p>Hello <strong th:text="${firstName}">User</strong>,</p>
+            
+            <p>Your external user account has been created successfully in the Manager System!</p>
+            
+            <div class="info-box">
+                <p><strong>Your account details:</strong></p>
+                <p>Email: <strong th:text="${email}">user@example.com</strong></p>
+                <p>Account Type: External User</p>
+            </div>
+            
+            <p>You will receive a separate email from our system with a secure link to set your password. Please check your inbox (and spam folder) for an email with the subject containing "Update Password" or "Reset Password".</p>
+            
+            <p>Once you've set your password using the link in that email, you can log in to the system using the button below:</p>
+            
+            <div style="text-align: center;">
+                <a th:href="${resetPasswordUrl}" class="button">Go to Login Page</a>
+            </div>
+            
+            <div class="info-box">
+                <p><strong>Next Steps:</strong></p>
+                <ol>
+                    <li>Check your email for the password reset link</li>
+                    <li>Click the link and set your new password</li>
+                    <li>Return to the login page and sign in with your new credentials</li>
+                </ol>
+            </div>
+            
+            <p>If you don't receive the password reset email within a few minutes, please contact your administrator.</p>
+        </div>
+        
+        <div class="footer">
+            <p>This is an automated message from Manager System.</p>
+            <p>If you have any questions, please contact your system administrator.</p>
+        </div>
+    </div>
+</body>
+</html>

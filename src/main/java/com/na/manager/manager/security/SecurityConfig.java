@@ -33,6 +33,7 @@ public class SecurityConfig {
                     req.requestMatchers(
                                      "/auth/**",
                                      "/api/v1/auth/**",
+                                     "/api/v1/external-auth/**",
                                      "/v2/api-docs",
                                      "/v3/api-docs" ,
                                      "/v3/api-docs/**" ,
@@ -46,7 +47,7 @@ public class SecurityConfig {
                                     )
                             .permitAll()
                             .requestMatchers("/api/v1/users/**")
-                            .permitAll() // Temporarily allow all access for testing
+                            .permitAll()
                             .anyRequest()
                                 .authenticated();
                 })

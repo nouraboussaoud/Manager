@@ -1,5 +1,8 @@
 package com.na.manager.manager.keycloak;
 
+import com.na.manager.manager.email.EmailService;
+import jakarta.mail.MessagingException;
+import java.security.SecureRandom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.Keycloak;
@@ -26,9 +29,13 @@ import java.util.Map;
 public class KeycloakUserService {
 
     private final Keycloak keycloak; // Use the bean from KeycloakConfig
-    
+    private final EmailService emailService;
+
     @Value("${keycloak.realm}")
     private String realm; // This is "manager-realm" for operations
+
+    @Value("${application.frontend.external-login-url}")
+    private String loginUrl;
 
     public String createUser(KeycloakUserDTO userDTO) {
         log.info("Creating user with email: {}", userDTO.getEmail());
@@ -80,6 +87,15 @@ public class KeycloakUserService {
                     assignRolesToUser(userId, Collections.singletonList("USER"));
                 } catch (Exception e) {
                     log.warn("Failed to assign role to user {}: {}", userId, e.getMessage());
+                }
+                
+                // After successful user creation and role assignment
+                try {
+                    // Send welcome email with login URL
+                    emailService.sendExternalUserWelcomeEmail(userDTO.getEmail(), userDTO.getFirstname(), loginUrl);
+                    log.info("Welcome email sent successfully to: {}", userDTO.getEmail());
+                } catch (Exception e) {
+                    log.error("Failed to send welcome email to {}: {}", userDTO.getEmail(), e.getMessage());
                 }
                 
                 return userId;
@@ -282,6 +298,18 @@ public class KeycloakUserService {
             return location.replaceAll(".*/([^/]+)$", "$1");
         }
         return null;
+    }
+
+    private String generateTemporaryPassword() {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+        StringBuilder password = new StringBuilder();
+        SecureRandom random = new SecureRandom();
+        
+        for (int i = 0; i < 12; i++) {
+            password.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        
+        return password.toString();
     }
 }
 

@@ -1,21 +1,24 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { LayoutComponent } from './shared/components/layout/layout.component';
+import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { ActivateAccountComponent } from './pages/activate-account/activate-account.component';
+import { ExternalLoginComponent } from './pages/external-login/external-login.component';
+import { ExternalDashboardComponent } from './pages/external-dashboard/external-dashboard.component';
+import { CreateExternalUserComponent } from './pages/external-users/create-external-user/create-external-user.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { 
-    path: 'login', 
-    loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent)
-  },
-  { 
-    path: 'register', 
-    loadComponent: () => import('./pages/register/register.component').then(m => m.RegisterComponent)
-  },
-  { 
-    path: 'activate-account', 
-    loadComponent: () => import('./pages/activate-account/activate-account.component').then(m => m.ActivateAccountComponent)
-  },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'activate-account', component: ActivateAccountComponent },
+  
+  // External user routes
+  { path: 'external-login', component: ExternalLoginComponent },
+  { path: 'external-dashboard', component: ExternalDashboardComponent },
+  { path: 'create-external-user', component: CreateExternalUserComponent },
+  
   {
     path: '',
     component: LayoutComponent,

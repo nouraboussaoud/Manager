@@ -30,6 +30,7 @@ export class RegisterComponent {
 
   errorMsg: string[] = [];
   isLoading = false;
+  showPassword = false;
 
   constructor(
     private router: Router,
@@ -70,6 +71,7 @@ export class RegisterComponent {
     this.router.navigate(['login']);
   }
 }
+
 
 
 

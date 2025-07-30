@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Manager System - External Access</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #28a745;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+        .external-badge {
+            background: #28a745;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .welcome-text {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #555;
+        }
+        .credentials-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+        .credential-item {
+            margin: 10px 0;
+            font-family: monospace;
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .security-notice {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+        }
+        .steps {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            counter-reset: step-counter;
+        }
+        .step {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        .step::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #28a745;
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🏢 Manager System</div>
+            <div class="external-badge">EXTERNAL ACCESS</div>
+            <h1>Welcome to Our Platform!</h1>
+        </div>
+
+        <div class="welcome-text">
+            <p>Hello <strong th:text="${firstName}">User</strong>,</p>
+            <p>You have been granted external access to our Manager System. An administrator has created an account for you to collaborate with our organization.</p>
+        </div>
+
+        <div class="credentials-box">
+            <h3>🔐 Your External Access Credentials</h3>
+            <div class="credential-item">
+                <strong>Email:</strong> <span th:text="${email}">user@example.com</span>
+            </div>
+            <div class="credential-item">
+                <strong>Temporary Password:</strong> <span th:text="${temporaryPassword}">temp123</span>
+            </div>
+        </div>
+
+        <div class="security-notice">
+            <strong>🔒 Security Requirements:</strong><br>
+            • This is a temporary password that MUST be changed on your first login<br>
+            • You will be required to verify your email address<br>
+            • Please choose a strong password with at least 8 characters<br>
+            • Your access is limited to external user functions only
+        </div>
+
+        <div class="steps">
+            <h3>🚀 Getting Started</h3>
+            <div class="step">Click the "Access External Portal" button below</div>
+            <div class="step">Enter your email and temporary password</div>
+            <div class="step">Verify your email address when prompted</div>
+            <div class="step">Create a new secure password</div>
+            <div class="step">Start collaborating with our team!</div>
+        </div>
+
+        <div style="text-align: center;">
+            <a th:href="${loginUrl}" class="btn">🌐 Access External Portal</a>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <p><strong>Need Help?</strong></p>
+            <p>If you have any questions about your external access, please contact the administrator who invited you.</p>
+        </div>
+
+        <div class="footer">
+            <p>This email was sent because external access was granted to you in Manager System.</p>
+            <p>If you didn't expect this email or believe it was sent in error, please contact our support team.</p>
+            <p style="margin-top: 20px;">
+                <strong>Manager System Team</strong><br>
+                📧 nour.aboussaoud@esprit.tn
+            </p>
+        </div>
+    </div>
+</body>
+</html>

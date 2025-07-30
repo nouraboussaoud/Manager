@@ -33,10 +33,12 @@ interface User {
           <h1>User Management</h1>
           <p>Manage your organization's users</p>
         </div>
-        <button class="btn btn-primary" (click)="openCreateModal()">
-          <i class="fas fa-plus"></i>
-          Add New User
-        </button>
+        <div class="header-actions">
+          <button class="btn btn-primary" (click)="openCreateModal()">
+            <i class="fas fa-plus"></i>
+            Add New User
+          </button>
+        </div>
       </div>
       
       <div class="filters-section">
@@ -486,12 +488,10 @@ export class UsersComponent implements OnInit {
   closeModal() {
     this.modalService.closeModal();
   }
+
+  createExternalUser() {
+    this.router.navigate(['/create-external-user']);
+  }
 }
-
-
-
-
-
-
 
 

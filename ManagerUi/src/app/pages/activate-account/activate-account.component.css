@@ -1,60 +1,65 @@
-/* Component-specific styles if needed */
-.auth-card {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+/* Modern dark theme - consistent with auth pages */
+.auth-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
   overflow: hidden;
-  max-width: 480px;
-  width: 100%;
-  animation: slideUp 0.6s ease-out;
 }
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.auth-container::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.2) 0%, transparent 50%);
+  z-index: 0;
+}
+
+.auth-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 3rem 2.5rem;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 1;
 }
 
 .auth-header {
   text-align: center;
-  padding: 40px 30px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  position: relative;
-}
-
-.auth-header::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  border-top: 20px solid #764ba2;
+  margin-bottom: 2rem;
 }
 
 .auth-header h3 {
-  margin: 0 0 8px 0;
-  font-size: 1.8rem;
+  color: white;
+  font-size: 1.75rem;
   font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .auth-header p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
   margin: 0;
-  opacity: 0.9;
-  font-size: 1rem;
 }
 
 .auth-body {
-  padding: 40px 30px;
+  padding: 0;
 }
 
 /* Activation Intro Section */
@@ -67,12 +72,14 @@
   width: 80px;
   height: 80px;
   margin: 0 auto 20px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
 }
 
 .email-icon-container clr-icon {
@@ -80,14 +87,15 @@
 }
 
 .activation-intro h4 {
-  color: #2c3e50;
+  color: white;
   font-size: 1.4rem;
   font-weight: 600;
   margin: 0 0 12px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .activation-description {
-  color: #7f8c8d;
+  color: rgba(255, 255, 255, 0.8);
   line-height: 1.6;
   margin: 0;
   font-size: 0.95rem;
@@ -100,7 +108,7 @@
 
 .code-label {
   display: block;
-  color: #2c3e50;
+  color: white;
   font-weight: 600;
   margin-bottom: 8px;
   font-size: 0.9rem;
@@ -111,26 +119,28 @@
 .activation-input {
   width: 100%;
   padding: 16px 20px;
-  border: 2px solid #e9ecef;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 12px;
   font-size: 1.2rem;
   font-weight: 600;
   text-align: center;
   letter-spacing: 4px;
   transition: all 0.3s ease;
-  background: #f8f9fa;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  color: #1f2937;
 }
 
 .activation-input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: rgba(255, 255, 255, 0.5);
   background: white;
-  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
   transform: translateY(-2px);
 }
 
 .code-helper {
-  color: #6c757d;
+  color: rgba(255, 255, 255, 0.7);
   font-size: 0.85rem;
   margin: 8px 0 0 0;
   text-align: center;
@@ -142,7 +152,9 @@
   padding: 16px 24px;
   border: none;
   border-radius: 12px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: rgba(30, 58, 138, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
   font-size: 1rem;
   font-weight: 600;
@@ -153,11 +165,13 @@
   justify-content: center;
   gap: 8px;
   margin-bottom: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .activation-btn:hover:not(:disabled) {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  transform: translateY(-1px);
+  background: rgba(30, 58, 138, 0.9);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .activation-btn:disabled {
@@ -174,11 +188,11 @@
 .resend-section {
   text-align: center;
   padding-top: 20px;
-  border-top: 1px solid #e9ecef;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .resend-text {
-  color: #6c757d;
+  color: rgba(255, 255, 255, 0.7);
   margin: 0 0 12px 0;
   font-size: 0.9rem;
 }
@@ -186,7 +200,7 @@
 .resend-btn {
   background: none;
   border: none;
-  color: #667eea;
+  color: rgba(255, 255, 255, 0.9);
   font-weight: 500;
   cursor: pointer;
   display: inline-flex;
@@ -198,7 +212,7 @@
 }
 
 .resend-btn:hover {
-  background: rgba(102, 126, 234, 0.1);
+  background: rgba(255, 255, 255, 0.1);
   transform: translateY(-1px);
 }
 
@@ -216,17 +230,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: scaleIn 0.6s ease-out;
+  backdrop-filter: blur(10px);
 }
 
 .result-icon.success {
-  background: linear-gradient(135deg, #28a745, #20c997);
-  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1);
+}
+
+.result-icon.success clr-icon {
+  color: #ffffff;
+  filter: drop-shadow(0 2px 4px rgba(255, 255, 255, 0.3));
 }
 
 .result-icon.error {
-  background: linear-gradient(135deg, #dc3545, #e74c3c);
-  box-shadow: 0 8px 25px rgba(220, 53, 69, 0.3);
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .result-icon clr-icon {
@@ -246,14 +266,17 @@
   font-size: 1.5rem;
   font-weight: 600;
   margin: 0 0 15px 0;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .result-title.success {
-  color: #28a745;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
 }
 
 .result-title.error {
-  color: #dc3545;
+  color: #ef4444;
 }
 
 .result-message {
@@ -262,6 +285,11 @@
   margin: 0 0 30px 0;
   padding: 20px;
   border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .result-message.success {
@@ -283,22 +311,34 @@
 }
 
 .btn-success {
-  background: linear-gradient(135deg, #28a745, #20c997);
+  background: rgba(30, 58, 138, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
-  padding: 14px 28px;
-  border: none;
+  padding: 16px 32px;
   border-radius: 12px;
   font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  text-transform: none;
+  letter-spacing: 0.5px;
 }
 
 .btn-success:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+  background: rgba(30, 58, 138, 0.9);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 12px 40px rgba(30, 58, 138, 0.3);
+}
+
+.btn-success:active {
+  transform: translateY(0);
 }
 
 /* Responsive Design */
@@ -306,14 +346,11 @@
   .auth-card {
     margin: 20px;
     max-width: none;
+    padding: 2rem 1.5rem;
   }
   
-  .auth-header {
-    padding: 30px 20px 15px;
-  }
-  
-  .auth-body {
-    padding: 30px 20px;
+  .auth-header h3 {
+    font-size: 1.5rem;
   }
   
   .email-icon-container {
@@ -346,4 +383,8 @@
     letter-spacing: 2px;
   }
 }
+
+
+
+
 

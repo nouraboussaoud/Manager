@@ -37,24 +37,29 @@ application:
   mailing:
     frontend:
       activation-url: http://localhost:4200/activate-account
+      password-reset-url: http://localhost:4200/reset-password
+  frontend:
+    external-login-url: http://localhost:4200/external-login
+    password-reset-url: http://localhost:4200/reset-password
 
 server:
   port: 9090
 
 # Keycloak Configuration
 keycloak:
-  auth-server-url: http://localhost:8180  # Remove /auth for newer Keycloak versions (17+)
-  realm: manager-realm  # Replace with your actual realm name
-  resource: manager-app  # Your client ID
+  auth-server-url: http://localhost:8180
+  realm: manager-realm
+  resource: manager-app
   credentials:
-    secret: jNFH7asbDmE8HCt9vJU5mCm5Wtga8QC2  # Replace with your actual client secret
-  admin-username: admin  # Keycloak admin username
-  admin-password: admin  # Keycloak admin password
+    secret: BW7P6oGHgz36wHx6QD9Vtz7tWqoJOi4C
+  admin-username: admin
+  admin-password: admin
   public-client: false
   bearer-only: false
   use-resource-role-mappings: true
   ssl-required: external
   confidential-port: 0
+  direct-access-grants-enabled: true
 
 # Logging configuration
 logging:
