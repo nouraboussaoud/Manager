@@ -77,7 +77,7 @@ Manager is a sophisticated account management system designed for financial inst
 
 ### Frontend Dependencies
 ```json
-- Angular 17+
+- Angular 19
 - TypeScript 5+
 - RxJS for reactive programming
 - Angular Router
