@@ -19,8 +19,14 @@ export interface KeycloakUser {
 })
 export class KeycloakUserService {
   private apiUrl = 'http://localhost:9090/api/v1/users';
+  private keycloakApiUrl = 'http://localhost:9090/api/v1/keycloak/users';
 
   constructor(private http: HttpClient) {}
+
+  getCurrentUser(): Observable<any> {
+    // For internal database users, use the users endpoint instead of keycloak endpoint
+    return this.http.get<any>(`${this.apiUrl}/me`);
+  }
 
   getAllUsers(): Observable<KeycloakUser[]> {
     return this.http.get<KeycloakUser[]>(this.apiUrl);

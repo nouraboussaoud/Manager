@@ -41,6 +41,24 @@ import { Router, RouterModule } from '@angular/router';
         </div>
         
         <div class="nav-item">
+          <a routerLink="/accounts" routerLinkActive="active" class="nav-link">
+            <div class="nav-icon">
+              <i class="fas fa-user-friends"></i>
+            </div>
+            <span class="nav-text" *ngIf="!isCollapsed">Users & Accounts</span>
+          </a>
+        </div>
+        
+        <div class="nav-item">
+          <a routerLink="/account-management" routerLinkActive="active" class="nav-link">
+            <div class="nav-icon">
+              <i class="fas fa-building"></i>
+            </div>
+            <span class="nav-text" *ngIf="!isCollapsed">All Accounts</span>
+          </a>
+        </div>
+        
+        <div class="nav-item">
           <a routerLink="/profile" routerLinkActive="active" class="nav-link">
             <div class="nav-icon">
               <i class="fas fa-user"></i>

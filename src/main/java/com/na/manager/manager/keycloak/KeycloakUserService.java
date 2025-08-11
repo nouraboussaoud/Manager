@@ -178,11 +178,14 @@ public class KeycloakUserService {
     /**
      * Get all users from Keycloak
      */
-    public List<UserRepresentation> getAllUsers() {
+    public List<KeycloakUserDTO> getAllUsers() {
         log.info("Fetching all users");
         try {
             RealmResource realmResource = keycloak.realm(realm); // Use manager-realm for operations
-            return realmResource.users().list();
+            List<UserRepresentation> userRepresentations = realmResource.users().list();
+            return userRepresentations.stream()
+                    .map(this::convertToDTO)
+                    .collect(java.util.stream.Collectors.toList());
         } catch (Exception e) {
             log.error("Error fetching all users: {}", e.getMessage(), e);
             throw new RuntimeException("Failed to fetch users: " + e.getMessage());
@@ -192,11 +195,12 @@ public class KeycloakUserService {
     /**
      * Get a user by ID from Keycloak
      */
-    public UserRepresentation getUserById(String userId) {
+    public KeycloakUserDTO getUserById(String userId) {
         log.info("Fetching user with ID: {}", userId);
         try {
             RealmResource realmResource = keycloak.realm(realm); // Use manager-realm for operations
-            return realmResource.users().get(userId).toRepresentation();
+            UserRepresentation userRepresentation = realmResource.users().get(userId).toRepresentation();
+            return convertToDTO(userRepresentation);
         } catch (Exception e) {
             log.error("Error fetching user by ID: {}", e.getMessage(), e);
             throw new RuntimeException("Failed to fetch user: " + e.getMessage());
@@ -206,11 +210,14 @@ public class KeycloakUserService {
     /**
      * Search for users by email or username
      */
-    public List<UserRepresentation> searchUsers(String search) {
+    public List<KeycloakUserDTO> searchUsers(String search) {
         log.info("Searching users with query: {}", search);
         try {
             RealmResource realmResource = keycloak.realm(realm); // Use manager-realm for operations
-            return realmResource.users().search(search, 0, 100);
+            List<UserRepresentation> userRepresentations = realmResource.users().search(search, 0, 100);
+            return userRepresentations.stream()
+                    .map(this::convertToDTO)
+                    .collect(java.util.stream.Collectors.toList());
         } catch (Exception e) {
             log.error("Error searching users: {}", e.getMessage(), e);
             throw new RuntimeException("Failed to search users: " + e.getMessage());
@@ -310,6 +317,35 @@ public class KeycloakUserService {
         }
         
         return password.toString();
+    }
+
+    /**
+     * Convert UserRepresentation to KeycloakUserDTO
+     */
+    private KeycloakUserDTO convertToDTO(UserRepresentation userRepresentation) {
+        if (userRepresentation == null) {
+            return null;
+        }
+        
+        java.time.LocalDate birthdate = null;
+        if (userRepresentation.getAttributes() != null &&
+            userRepresentation.getAttributes().containsKey("birthdate")) {
+            try {
+                String birthdateStr = userRepresentation.getAttributes().get("birthdate").get(0);
+                birthdate = java.time.LocalDate.parse(birthdateStr);
+            } catch (Exception e) {
+                log.warn("Failed to parse birthdate for user {}: {}", userRepresentation.getId(), e.getMessage());
+            }
+        }
+        
+        return KeycloakUserDTO.builder()
+                .id(userRepresentation.getId())
+                .firstname(userRepresentation.getFirstName())
+                .lastname(userRepresentation.getLastName())
+                .email(userRepresentation.getEmail())
+                .enabled(userRepresentation.isEnabled())
+                .birthdate(birthdate)
+                .build();
     }
 }
 

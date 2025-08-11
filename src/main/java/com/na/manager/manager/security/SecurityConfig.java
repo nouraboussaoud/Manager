@@ -48,6 +48,10 @@ public class SecurityConfig {
                             .permitAll()
                             .requestMatchers("/api/v1/users/**")
                             .permitAll()
+                            .requestMatchers("/api/v1/integrated-accounts/**")
+                            .permitAll()
+                            .requestMatchers("/api/v1/keycloak/users/**")
+                            .permitAll()
                             .anyRequest()
                                 .authenticated();
                 })

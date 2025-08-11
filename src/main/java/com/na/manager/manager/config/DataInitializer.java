@@ -1,3 +1,5 @@
+package com.na.manager.manager.config;
+
 import com.na.manager.manager.role.RoleRepository;
 import com.na.manager.manager.user.User;
 import com.na.manager.manager.user.UserRepository;

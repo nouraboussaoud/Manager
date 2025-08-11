@@ -31,6 +31,22 @@ export const routes: Routes = [
       {
         path: 'users',
         loadComponent: () => import('./pages/users/users.component').then(m => m.UsersComponent)
+      },
+      {
+        path: 'accounts',
+        loadComponent: () => import('./pages/accounts/accounts.component').then(m => m.AccountsComponent)
+      },
+      {
+        path: 'account-management',
+        loadComponent: () => import('./pages/account-management/account-management.component').then(m => m.AccountManagementComponent)
+      },
+      {
+        path: 'profile',
+        loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent)
+      },
+      {
+        path: 'settings',
+        loadComponent: () => import('./pages/settings/settings.component').then(m => m.SettingsComponent)
       }
     ]
   },

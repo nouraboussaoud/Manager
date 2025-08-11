@@ -1,0 +1,14 @@
+[ {
+  "identite" : "123456",
+  "pwd" : "123456789",
+  "libelle" : "Société ABC",
+  "adresse" : "test ",
+  "email" : "nour@nawara.com",
+  "mobile" : "27596886",
+  "nat_pid" : "1234",
+  "lastPwdChange" : [ 2025, 8, 11, 10, 52, 49, 139031000 ],
+  "tradeQB" : true,
+  "keycloak_user_id" : "ae6e2ff6-aacf-4474-8f2e-e8a9c478f842",
+  "created_date" : [ 2025, 8, 11, 10, 52, 49, 139031000 ],
+  "last_modified_date" : [ 2025, 8, 11, 10, 52, 49, 139031000 ]
+} ]

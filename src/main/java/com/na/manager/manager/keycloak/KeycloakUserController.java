@@ -76,10 +76,10 @@ public class KeycloakUserController {
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Get all users from Keycloak")
-    public ResponseEntity<ApiResponse<List<UserRepresentation>>> getAllUsers() {
+    public ResponseEntity<ApiResponse<List<KeycloakUserDTO>>> getAllUsers() {
         log.info("Fetching all users from Keycloak");
         try {
-            List<UserRepresentation> users = keycloakUserService.getAllUsers();
+            List<KeycloakUserDTO> users = keycloakUserService.getAllUsers();
             return ResponseEntity.ok(ApiResponse.success("Users retrieved successfully", users));
         } catch (Exception e) {
             log.error("Failed to fetch users: {}", e.getMessage());
@@ -91,10 +91,10 @@ public class KeycloakUserController {
     @GetMapping("/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Get user by ID from Keycloak")
-    public ResponseEntity<ApiResponse<UserRepresentation>> getUserById(@PathVariable String userId) {
+    public ResponseEntity<ApiResponse<KeycloakUserDTO>> getUserById(@PathVariable String userId) {
         log.info("Fetching user with ID: {}", userId);
         try {
-            UserRepresentation user = keycloakUserService.getUserById(userId);
+            KeycloakUserDTO user = keycloakUserService.getUserById(userId);
             return ResponseEntity.ok(ApiResponse.success("User retrieved successfully", user));
         } catch (Exception e) {
             log.error("Failed to fetch user: {}", e.getMessage());
@@ -106,10 +106,10 @@ public class KeycloakUserController {
     @GetMapping("/search")
     @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Search users in Keycloak")
-    public ResponseEntity<ApiResponse<List<UserRepresentation>>> searchUsers(@RequestParam String query) {
+    public ResponseEntity<ApiResponse<List<KeycloakUserDTO>>> searchUsers(@RequestParam String query) {
         log.info("Searching users with query: {}", query);
         try {
-            List<UserRepresentation> users = keycloakUserService.searchUsers(query);
+            List<KeycloakUserDTO> users = keycloakUserService.searchUsers(query);
             return ResponseEntity.ok(ApiResponse.success("Search completed successfully", users));
         } catch (Exception e) {
             log.error("Failed to search users: {}", e.getMessage());
@@ -132,6 +132,7 @@ public class KeycloakUserController {
                     .body(ApiResponse.error("Failed to delete user: " + e.getMessage()));
         }
     }
+
 
     // Helper class for consistent API responses
     public static class ApiResponse<T> {

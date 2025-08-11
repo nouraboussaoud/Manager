@@ -17,6 +17,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class KeycloakUserDTO {
     
+    private String id;
+    
     @NotEmpty(message = "Firstname is mandatory")
     @NotBlank(message = "Firstname is mandatory")
     private String firstname;

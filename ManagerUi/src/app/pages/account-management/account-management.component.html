@@ -1,0 +1,460 @@
+<div class="account-management-container">
+  <div class="header">
+    <h1>Account Management</h1>
+    <div class="header-actions">
+      <button 
+        (click)="showSefClientsList()" 
+        class="btn btn-info"
+        [class.active]="showSefClients"
+      >
+        SEF Clients ({{ sefClients.length }})
+      </button>
+      <button (click)="loadAllAccounts()" class="btn btn-secondary">
+        Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Search and Filters -->
+  <div class="filters-section">
+    <div class="search-container">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        (input)="filterAccounts()"
+        placeholder="Search accounts, owners, or details..."
+        class="search-input"
+      >
+    </div>
+    
+    <div class="filter-controls">
+      <div class="filter-group">
+        <label>Status:</label>
+        <select [(ngModel)]="filterOptions.status" (change)="filterAccounts()" class="filter-select">
+          <option value="all">All</option>
+          <option value="active">Active</option>
+          <option value="disabled">Disabled</option>
+          <option value="closed">Closed</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label>Local Client:</label>
+        <select [(ngModel)]="filterOptions.hasLocalClient" (change)="filterAccounts()" class="filter-select">
+          <option value="all">All</option>
+          <option value="yes">Has Local Client</option>
+          <option value="no">No Local Client</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label>Owner:</label>
+        <select [(ngModel)]="filterOptions.hasOwner" (change)="filterAccounts()" class="filter-select">
+          <option value="all">All</option>
+          <option value="yes">Has Owner</option>
+          <option value="no">No Owner</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="error-message">
+    <span>{{ error }}</span>
+    <button (click)="clearError()" class="close-btn">&times;</button>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <span>Loading accounts...</span>
+  </div>
+
+  <div class="content" *ngIf="!loading">
+    <!-- Accounts List -->
+    <div class="accounts-panel" [class.with-details]="selectedAccount">
+      <div class="panel-header">
+        <h2>All Accounts ({{ filteredAccounts.length }})</h2>
+        <button 
+          *ngIf="selectedAccount" 
+          (click)="clearSelection()" 
+          class="btn btn-secondary btn-sm"
+        >
+          Clear Selection
+        </button>
+      </div>
+      
+      <div class="accounts-grid">
+        <div 
+          *ngFor="let account of filteredAccounts" 
+          class="account-card"
+          [class.selected]="selectedAccount?.cod_cli === account.cod_cli"
+          (click)="selectAccount(account)"
+        >
+          <div class="account-header">
+            <h3>{{ account.libcli }}</h3>
+            <span 
+              class="status-badge"
+              [ngClass]="getAccountStatusClass(account)"
+            >
+              {{ getAccountStatusText(account) }}
+            </span>
+          </div>
+          
+          <div class="account-info">
+            <div class="info-row">
+              <span class="label">Code:</span>
+              <span class="value">{{ account.cod_cli }}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Identity:</span>
+              <span class="value">{{ account.identite }}</span>
+            </div>
+            <div class="info-row" *ngIf="account.trade">
+              <span class="label">Trade:</span>
+              <span class="value">{{ account.trade }}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Address:</span>
+              <span class="value">{{ account.adress }}</span>
+            </div>
+          </div>
+          
+          <div class="owner-preview" *ngIf="account.ownerDetails">
+            <div class="owner-info">
+              <span class="owner-name">
+                {{ account.ownerDetails.firstname }} {{ account.ownerDetails.lastname }}
+              </span>
+              <span class="owner-email">{{ account.ownerDetails.email }}</span>
+            </div>
+          </div>
+          
+          <div class="account-indicators">
+            <span *ngIf="account.localcli" class="indicator local-client" title="Has Local Client">LC</span>
+            <span *ngIf="account.localcli?.tradeQB" class="indicator trade-qb" title="Trade QB">QB</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Details Panel -->
+    <div class="details-panel" *ngIf="selectedAccount && !showSefClients">
+      <!-- Owner Details -->
+      <div *ngIf="showOwnerDetails" class="owner-details">
+        <div class="details-header">
+          <h3>Account Details: {{ selectedAccount.libcli }}</h3>
+          <div class="header-actions">
+            <button 
+              (click)="showAddToSefForm()" 
+              class="btn btn-primary"
+              [disabled]="showSefForm"
+            >
+              Add to SEF
+            </button>
+          </div>
+        </div>
+
+        <!-- Account Information -->
+        <div class="details-section">
+          <h4>Account Information</h4>
+          <div class="details-grid">
+            <div class="detail-item">
+              <label>Client Code:</label>
+              <span>{{ selectedAccount.cod_cli }}</span>
+            </div>
+            <div class="detail-item">
+              <label>Company Name:</label>
+              <span>{{ selectedAccount.libcli }}</span>
+            </div>
+            <div class="detail-item">
+              <label>Identity:</label>
+              <span>{{ selectedAccount.identite }}</span>
+            </div>
+            <div class="detail-item" *ngIf="selectedAccount.trade">
+              <label>Trade:</label>
+              <span>{{ selectedAccount.trade }}</span>
+            </div>
+            <div class="detail-item">
+              <label>Address:</label>
+              <span>{{ selectedAccount.adress }}</span>
+            </div>
+            <div class="detail-item" *ngIf="selectedAccount.ind_societe">
+              <label>Company Type:</label>
+              <span>{{ selectedAccount.ind_societe }}</span>
+            </div>
+            <div class="detail-item" *ngIf="selectedAccount.chef_file">
+              <label>File Manager:</label>
+              <span>{{ selectedAccount.chef_file }}</span>
+            </div>
+            <div class="detail-item">
+              <label>Status:</label>
+              <span [ngClass]="getAccountStatusClass(selectedAccount)">
+                {{ getAccountStatusText(selectedAccount) }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Owner Information -->
+        <div class="details-section" *ngIf="selectedAccount.ownerDetails">
+          <h4>Owner Information</h4>
+          <div class="details-grid">
+            <div class="detail-item">
+              <label>Name:</label>
+              <span>{{ selectedAccount.ownerDetails.firstname }} {{ selectedAccount.ownerDetails.lastname }}</span>
+            </div>
+            <div class="detail-item">
+              <label>Email:</label>
+              <span>{{ selectedAccount.ownerDetails.email }}</span>
+            </div>
+            <div class="detail-item" *ngIf="selectedAccount.ownerDetails.username">
+              <label>Username:</label>
+              <span>{{ selectedAccount.ownerDetails.username }}</span>
+            </div>
+            <div class="detail-item">
+              <label>User Status:</label>
+              <span 
+                class="status-badge"
+                [class.enabled]="selectedAccount.ownerDetails.enabled"
+                [class.disabled]="!selectedAccount.ownerDetails.enabled"
+              >
+                {{ selectedAccount.ownerDetails.enabled ? 'Enabled' : 'Disabled' }}
+              </span>
+            </div>
+            <div class="detail-item">
+              <label>Keycloak ID:</label>
+              <span class="keycloak-id">{{ selectedAccount.keycloak_user_id }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Local Client Information -->
+        <div class="details-section" *ngIf="selectedAccount.localcli">
+          <h4>Local Client Information</h4>
+          <div class="details-grid">
+            <div class="detail-item">
+              <label>Identity:</label>
+              <span>{{ selectedAccount.localcli.identite }}</span>
+            </div>
+            <div class="detail-item">
+              <label>National PID:</label>
+              <span>{{ selectedAccount.localcli.nat_pid }}</span>
+            </div>
+            <div class="detail-item">
+              <label>Label:</label>
+              <span>{{ selectedAccount.localcli.libelle }}</span>
+            </div>
+            <div class="detail-item">
+              <label>Address:</label>
+              <span>{{ selectedAccount.localcli.adresse }}</span>
+            </div>
+            <div class="detail-item">
+              <label>Email:</label>
+              <span>{{ selectedAccount.localcli.email }}</span>
+            </div>
+            <div class="detail-item">
+              <label>Mobile:</label>
+              <span>{{ selectedAccount.localcli.mobile }}</span>
+            </div>
+            <div class="detail-item">
+              <label>Trade QB:</label>
+              <span class="boolean-value" [class.true]="selectedAccount.localcli.tradeQB">
+                {{ selectedAccount.localcli.tradeQB ? 'Yes' : 'No' }}
+              </span>
+            </div>
+            <div class="detail-item" *ngIf="selectedAccount.localcli.lastPwdChange">
+              <label>Last Password Change:</label>
+              <span>{{ selectedAccount.localcli.lastPwdChange | date:'medium' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEF Form -->
+      <div *ngIf="showSefForm" class="sef-form">
+        <div class="form-header">
+          <h3>Add {{ selectedAccount.libcli }} to SEF Clients</h3>
+        </div>
+        
+        <form (ngSubmit)="addToSef()" #sefForm="ngForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="sefIdentite">Identity *</label>
+              <input 
+                type="text" 
+                id="sefIdentite"
+                [(ngModel)]="newSefClient.identite" 
+                name="sefIdentite"
+                required
+                class="form-control"
+              >
+            </div>
+            <div class="form-group">
+              <label for="sefNatPid">National PID *</label>
+              <input 
+                type="text" 
+                id="sefNatPid"
+                [(ngModel)]="newSefClient.nat_pid" 
+                name="sefNatPid"
+                required
+                class="form-control"
+              >
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="sefLibelle">Label *</label>
+              <input 
+                type="text" 
+                id="sefLibelle"
+                [(ngModel)]="newSefClient.libelle" 
+                name="sefLibelle"
+                required
+                class="form-control"
+              >
+            </div>
+            <div class="form-group">
+              <label for="sefEmail">Email *</label>
+              <input 
+                type="email" 
+                id="sefEmail"
+                [(ngModel)]="newSefClient.email" 
+                name="sefEmail"
+                required
+                class="form-control"
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="sefAdresse">Address *</label>
+            <input 
+              type="text" 
+              id="sefAdresse"
+              [(ngModel)]="newSefClient.adresse" 
+              name="sefAdresse"
+              required
+              class="form-control"
+            >
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="sefMobile">Mobile</label>
+              <input 
+                type="tel" 
+                id="sefMobile"
+                [(ngModel)]="newSefClient.mobile" 
+                name="sefMobile"
+                class="form-control"
+              >
+            </div>
+            <div class="form-group">
+              <label for="sefPwd">Password *</label>
+              <input 
+                type="password" 
+                id="sefPwd"
+                [(ngModel)]="newSefClient.pwd" 
+                name="sefPwd"
+                required
+                class="form-control"
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input 
+                type="checkbox" 
+                [(ngModel)]="newSefClient.tradeQB" 
+                name="sefTradeQB"
+              >
+              Trade QB
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" [disabled]="!sefForm.form.valid">
+              Add to SEF
+            </button>
+            <button type="button" (click)="cancelSefForm()" class="btn btn-secondary">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- SEF Clients Panel -->
+    <div class="sef-clients-panel" *ngIf="showSefClients">
+      <div class="panel-header">
+        <h3>SEF Clients ({{ sefClients.length }})</h3>
+        <button (click)="clearSelection()" class="btn btn-secondary">
+          Back to Accounts
+        </button>
+      </div>
+
+      <div class="sef-clients-list">
+        <div *ngIf="sefClients.length === 0" class="no-clients">
+          <p>No SEF clients found.</p>
+        </div>
+
+        <div *ngFor="let client of sefClients" class="sef-client-card">
+          <div class="client-header">
+            <h4>{{ client.libelle }}</h4>
+            <div class="client-actions">
+              <button (click)="removeSefClient(client)" class="btn btn-sm btn-danger">
+                Remove
+              </button>
+            </div>
+          </div>
+
+          <div class="client-details">
+            <div class="detail-row">
+              <span class="label">Identity:</span>
+              <span class="value">{{ client.identite }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">National PID:</span>
+              <span class="value">{{ client.nat_pid }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Email:</span>
+              <span class="value">{{ client.email }}</span>
+            </div>
+            <div class="detail-row" *ngIf="client.mobile">
+              <span class="label">Mobile:</span>
+              <span class="value">{{ client.mobile }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Address:</span>
+              <span class="value">{{ client.adresse }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Trade QB:</span>
+              <span class="value boolean-value" [class.true]="client.tradeQB">
+                {{ client.tradeQB ? 'Yes' : 'No' }}
+              </span>
+            </div>
+            <div class="detail-row" *ngIf="client.created_date">
+              <span class="label">Created:</span>
+              <span class="value">{{ client.created_date | date:'medium' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!selectedAccount && !showSefClients && filteredAccounts.length === 0">
+      <h3>No accounts found</h3>
+      <p>Try adjusting your search criteria or filters.</p>
+    </div>
+
+    <div class="empty-state" *ngIf="!selectedAccount && !showSefClients && filteredAccounts.length > 0">
+      <h3>Select an account to view details</h3>
+      <p>Click on any account card to see detailed information and manage SEF clients.</p>
+    </div>
+  </div>
+</div>

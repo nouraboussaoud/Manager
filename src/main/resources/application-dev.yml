@@ -41,6 +41,8 @@ application:
   frontend:
     external-login-url: http://localhost:4200/external-login
     password-reset-url: http://localhost:4200/reset-password
+  accounts:
+    data-directory: data
 
 server:
   port: 9090

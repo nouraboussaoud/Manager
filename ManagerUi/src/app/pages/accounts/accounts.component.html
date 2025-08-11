@@ -1,0 +1,409 @@
+<div class="accounts-container">
+  <div class="header">
+    <h1>Account Management</h1>
+    <div class="search-container">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        (input)="filterUsers()"
+        placeholder="Search users or accounts..."
+        class="search-input"
+      >
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="error-message">
+    <span>{{ error }}</span>
+    <button (click)="clearError()" class="close-btn">&times;</button>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <span>Loading...</span>
+  </div>
+
+  <div class="content" *ngIf="!loading">
+    <!-- Users List -->
+    <div class="users-panel">
+      <h2>Users ({{ filteredUsers.length }})</h2>
+      <div class="users-list">
+        <div 
+          *ngFor="let userWithAccounts of filteredUsers" 
+          class="user-card"
+          [class.selected]="selectedUser?.user?.id === userWithAccounts.user.id"
+          (click)="selectUser(userWithAccounts)"
+        >
+          <div class="user-info">
+            <h3>{{ userWithAccounts.user.firstname }} {{ userWithAccounts.user.lastname }}</h3>
+            <p class="email">{{ userWithAccounts.user.email }}</p>
+            <div class="user-stats">
+              <span class="stat">
+                <strong>{{ userWithAccounts.accountCount }}</strong> accounts
+              </span>
+              <span class="stat active">
+                <strong>{{ userWithAccounts.activeAccountCount }}</strong> active
+              </span>
+              <span class="stat disabled" *ngIf="userWithAccounts.disabledAccountCount > 0">
+                <strong>{{ userWithAccounts.disabledAccountCount }}</strong> disabled
+              </span>
+            </div>
+          </div>
+          <div class="user-status">
+            <span 
+              class="status-badge"
+              [class.enabled]="userWithAccounts.user.enabled"
+              [class.disabled]="!userWithAccounts.user.enabled"
+            >
+              {{ userWithAccounts.user.enabled ? 'Enabled' : 'Disabled' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accounts Panel -->
+    <div class="accounts-panel" *ngIf="selectedUser">
+      <div class="panel-header">
+        <h2>Accounts for {{ selectedUser.user.firstname }} {{ selectedUser.user.lastname }}</h2>
+        <button 
+          (click)="showCreateAccountForm()" 
+          class="btn btn-primary"
+          [disabled]="showCreateForm || showEditForm"
+        >
+          Add Account
+        </button>
+      </div>
+
+      <!-- Create Account Form -->
+      <div *ngIf="showCreateForm" class="form-container">
+        <h3>Create New Account</h3>
+        <form (ngSubmit)="createAccount()" #createForm="ngForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="codCli">Client Code *</label>
+              <input 
+                type="number" 
+                id="codCli"
+                [(ngModel)]="newAccount.cod_cli" 
+                name="codCli"
+                required
+                class="form-control"
+              >
+            </div>
+            <div class="form-group">
+              <label for="libcli">Company Name *</label>
+              <input 
+                type="text" 
+                id="libcli"
+                [(ngModel)]="newAccount.libcli" 
+                name="libcli"
+                required
+                class="form-control"
+              >
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="identite">Identity *</label>
+              <input 
+                type="text" 
+                id="identite"
+                [(ngModel)]="newAccount.identite" 
+                name="identite"
+                required
+                class="form-control"
+              >
+            </div>
+            <div class="form-group">
+              <label for="trade">Trade</label>
+              <input 
+                type="number" 
+                id="trade"
+                [(ngModel)]="newAccount.trade" 
+                name="trade"
+                class="form-control"
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="adress">Address *</label>
+            <input 
+              type="text" 
+              id="adress"
+              [(ngModel)]="newAccount.adress" 
+              name="adress"
+              required
+              class="form-control"
+            >
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="indSociete">Company Type</label>
+              <select 
+                id="indSociete"
+                [(ngModel)]="newAccount.ind_societe" 
+                name="indSociete"
+                class="form-control"
+              >
+                <option value="">Select type</option>
+                <option value="SARL">SARL</option>
+                <option value="SA">SA</option>
+                <option value="SAS">SAS</option>
+                <option value="EURL">EURL</option>
+                <option value="SNC">SNC</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="chefFile">File Manager</label>
+              <input 
+                type="text" 
+                id="chefFile"
+                [(ngModel)]="newAccount.chef_file" 
+                name="chefFile"
+                class="form-control"
+              >
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input 
+                  type="checkbox" 
+                  [(ngModel)]="newAccount.cloture" 
+                  name="cloture"
+                >
+                Closed
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input 
+                  type="checkbox" 
+                  [(ngModel)]="newAccount.disabled" 
+                  name="disabled"
+                >
+                Disabled
+              </label>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" [disabled]="!createForm.form.valid">
+              Create Account
+            </button>
+            <button type="button" (click)="cancelCreate()" class="btn btn-secondary">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Edit Account Form -->
+      <div *ngIf="showEditForm && editingAccount" class="form-container">
+        <h3>Edit Account: {{ editingAccount.libcli }}</h3>
+        <form (ngSubmit)="updateAccount()" #editForm="ngForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editCodCli">Client Code *</label>
+              <input
+                type="number"
+                id="editCodCli"
+                [(ngModel)]="editingAccount.cod_cli"
+                name="editCodCli"
+                required
+                class="form-control"
+              >
+            </div>
+            <div class="form-group">
+              <label for="editLibcli">Company Name *</label>
+              <input
+                type="text"
+                id="editLibcli"
+                [(ngModel)]="editingAccount.libcli"
+                name="editLibcli"
+                required
+                class="form-control"
+              >
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editIdentite">Identity *</label>
+              <input
+                type="text"
+                id="editIdentite"
+                [(ngModel)]="editingAccount.identite"
+                name="editIdentite"
+                required
+                class="form-control"
+              >
+            </div>
+            <div class="form-group">
+              <label for="editTrade">Trade</label>
+              <input 
+                type="number" 
+                id="editTrade"
+                [(ngModel)]="editingAccount.trade" 
+                name="editTrade"
+                class="form-control"
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="editAdress">Address *</label>
+            <input 
+              type="text" 
+              id="editAdress"
+              [(ngModel)]="editingAccount.adress" 
+              name="editAdress"
+              required
+              class="form-control"
+            >
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editIndSociete">Company Type</label>
+              <select 
+                id="editIndSociete"
+                [(ngModel)]="editingAccount.ind_societe" 
+                name="editIndSociete"
+                class="form-control"
+              >
+                <option value="">Select type</option>
+                <option value="SARL">SARL</option>
+                <option value="SA">SA</option>
+                <option value="SAS">SAS</option>
+                <option value="EURL">EURL</option>
+                <option value="SNC">SNC</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editChefFile">File Manager</label>
+              <input 
+                type="text" 
+                id="editChefFile"
+                [(ngModel)]="editingAccount.chef_file" 
+                name="editChefFile"
+                class="form-control"
+              >
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input 
+                  type="checkbox" 
+                  [(ngModel)]="editingAccount.cloture" 
+                  name="editCloture"
+                >
+                Closed
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input 
+                  type="checkbox" 
+                  [(ngModel)]="editingAccount.disabled" 
+                  name="editDisabled"
+                >
+                Disabled
+              </label>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" [disabled]="!editForm.form.valid">
+              Update Account
+            </button>
+            <button type="button" (click)="cancelEdit()" class="btn btn-secondary">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Accounts List -->
+      <div class="accounts-list" *ngIf="!showCreateForm && !showEditForm">
+        <div *ngIf="selectedUser.accounts.length === 0" class="no-accounts">
+          <p>No accounts found for this user.</p>
+        </div>
+
+        <div *ngFor="let account of selectedUser.accounts" class="account-card">
+          <div class="account-header">
+            <h4>{{ account.libcli }}</h4>
+            <div class="account-actions">
+              <button 
+                (click)="toggleAccountStatus(account)" 
+                class="btn btn-sm"
+                [class.btn-success]="account.disabled"
+                [class.btn-warning]="!account.disabled"
+              >
+                {{ account.disabled ? 'Enable' : 'Disable' }}
+              </button>
+              <button (click)="editAccount(account)" class="btn btn-sm btn-primary">
+                Edit
+              </button>
+              <button (click)="deleteAccount(account)" class="btn btn-sm btn-danger">
+                Delete
+              </button>
+            </div>
+          </div>
+
+          <div class="account-details">
+            <div class="detail-row">
+              <span class="label">Client Code:</span>
+              <span class="value">{{ account.cod_cli }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Identity:</span>
+              <span class="value">{{ account.identite }}</span>
+            </div>
+            <div class="detail-row" *ngIf="account.trade">
+              <span class="label">Trade:</span>
+              <span class="value">{{ account.trade }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Address:</span>
+              <span class="value">{{ account.adress }}</span>
+            </div>
+            <div class="detail-row" *ngIf="account.ind_societe">
+              <span class="label">Company Type:</span>
+              <span class="value">{{ account.ind_societe }}</span>
+            </div>
+            <div class="detail-row" *ngIf="account.chef_file">
+              <span class="label">File Manager:</span>
+              <span class="value">{{ account.chef_file }}</span>
+            </div>
+          </div>
+
+          <div class="account-status">
+            <span 
+              class="status-badge"
+              [class.active]="!account.disabled && !account.cloture"
+              [class.disabled]="account.disabled"
+              [class.closed]="account.cloture"
+            >
+              {{ account.disabled ? 'Disabled' : (account.cloture ? 'Closed' : 'Active') }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!selectedUser">
+      <h3>Select a user to view their accounts</h3>
+      <p>Choose a user from the list to manage their accounts.</p>
+    </div>
+  </div>
+</div>
