@@ -1,0 +1,248 @@
+/* Users Container */
+.users-container {
+  padding: var(--space-xl);
+  background: var(--background-secondary);
+  min-height: 100vh;
+}
+
+/* Header */
+.header-content {
+  flex: 1;
+}
+
+.header-actions {
+  display: flex;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+/* Filters Section */
+.filters-section {
+  margin-bottom: var(--space-xl);
+  padding: var(--space-lg) !important;
+}
+
+.search-container {
+  margin-bottom: var(--space-lg);
+}
+
+.filter-tabs {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.filter-tabs .nav-link {
+  padding: var(--space-sm) var(--space-lg);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: var(--background-primary);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.filter-tabs .nav-link:hover {
+  background: var(--background-tertiary);
+  color: var(--text-primary);
+}
+
+.filter-tabs .nav-link.active {
+  background: var(--primary-color);
+  color: var(--text-on-primary);
+  border-color: var(--primary-color);
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3xl);
+  gap: var(--space-lg);
+}
+
+/* Error State */
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-2xl) !important;
+  text-align: center;
+}
+
+/* Users Content */
+.users-content {
+  background: var(--background-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+/* User Name Cell */
+.user-name-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-on-primary);
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.user-name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.user-roles {
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-3xl) !important;
+  text-align: center;
+}
+
+.empty-icon {
+  color: var(--text-disabled);
+  margin-bottom: var(--space-lg);
+}
+
+.empty-state h3 {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.empty-state p {
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Text Utilities */
+.text-muted {
+  color: var(--text-secondary);
+}
+
+.text-danger {
+  color: var(--error-color) !important;
+}
+
+/* Dropdown Divider */
+.dropdown-divider {
+  height: 1px;
+  background: var(--border-light);
+  margin: var(--space-xs) 0;
+}
+
+/* Modal Overrides */
+.modal-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.modal-body p {
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.modal-footer {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: flex-end;
+}
+
+/* Clarity Component Customizations */
+clr-datagrid {
+  --clr-datagrid-row-hover: var(--background-tertiary);
+  --clr-datagrid-selection-color: var(--primary-color);
+}
+
+clr-dropdown-menu {
+  min-width: 160px;
+}
+
+clr-badge {
+  font-weight: 500;
+}
+
+/* Action Bar Styling */
+.btn-group {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .users-container {
+    padding: var(--space-lg);
+  }
+  
+  .mmm-header {
+    flex-direction: column;
+    gap: var(--space-lg);
+    align-items: stretch;
+  }
+  
+  .header-actions {
+    justify-content: stretch;
+  }
+  
+  .header-actions .mmm-button {
+    flex: 1;
+  }
+  
+  .filter-tabs {
+    flex-direction: column;
+  }
+  
+  .btn-group {
+    flex-direction: column;
+  }
+  
+  .btn-group .mmm-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .users-container {
+    padding: var(--space-md);
+  }
+  
+  .user-name-cell {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+  
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+  }
+}

@@ -1,96 +1,128 @@
-<div class="auth-container">
-  <div class="auth-card">
-    <div class="auth-header">
-      <clr-icon shape="shield-check" size="48" style="margin-bottom: 1rem;"></clr-icon>
-      <h3>Account Activation</h3>
-      <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">Verify your email address</p>
-    </div>
-    
-    <div class="auth-body">
-      <div *ngIf="!submitted">
-        <div class="activation-intro">
-          <div class="email-icon-container">
-            <clr-icon shape="email" size="64"></clr-icon>
+<div class="login-container">
+  <div class="login-wrapper">
+    <div class="login-card">
+      <div class="login-form">
+        <!-- Header Section -->
+        <div class="header-section">
+          <div class="logo-container">
+            <div class="logo-icon">
+              <clr-icon shape="shield" size="32"></clr-icon>
+            </div>
           </div>
-          <h4>Check Your Email</h4>
-          <p class="activation-description">
-            We've sent a 6-digit verification code to your email address. 
-            Please enter it below to activate your account.
-          </p>
+          <h1 class="brand-title">MMC Manager</h1>
+          <div class="divider"></div>
+          <p class="subtitle">Account Activation</p>
         </div>
-        
-        <form clrForm class="activation-form">
-          <div class="code-input-section">
+
+        <!-- Error Alert -->
+        <div 
+          *ngIf="errorMsg.length > 0" 
+          class="custom-alert alert-danger">
+          <div class="alert-content">
+            <clr-icon shape="exclamation-triangle" class="alert-icon"></clr-icon>
+            <div class="alert-messages">
+              <div *ngFor="let error of errorMsg" class="alert-message">
+                {{ error }}
+              </div>
+            </div>
+            <button 
+              type="button" 
+              class="alert-close"
+              (click)="errorMsg = []"
+              aria-label="Close alert">
+              <clr-icon shape="times"></clr-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Activation Content -->
+        <div *ngIf="!submitted" class="form-section">
+          <!-- Email Verification Info -->
+          <div class="activation-info">
+            <div class="email-icon-wrapper">
+              <clr-icon shape="email" size="48" class="email-icon"></clr-icon>
+            </div>
+            <h3 class="activation-title">Check Your Email</h3>
+            <p class="activation-description">
+              We've sent a 6-digit verification code to your email address. 
+              Please enter it below to activate your account.
+            </p>
+          </div>
+
+          <!-- Code Input -->
+          <div class="code-input-container">
             <label class="code-label">Verification Code</label>
             <input 
-              clrInput 
               type="text"
               [(ngModel)]="token"
               name="token"
               maxlength="6"
               placeholder="000000"
-              class="activation-input"
-              (input)="onCodeCompleted()" 
+              class="code-input"
+              (input)="onCodeInput()" 
               (keyup.enter)="onCodeCompleted()" />
             <p class="code-helper">Enter the 6-digit code from your email</p>
           </div>
 
+          <!-- Activate Button -->
           <button
             type="button"
-            class="btn btn-primary btn-block activation-btn"
-            [class.loading]="isLoading"
+            class="btn btn-primary login-btn"
             [disabled]="token.length !== 6 || isLoading"
             (click)="onCodeCompleted()">
-            <clr-spinner *ngIf="isLoading" clrInline clrSmall></clr-spinner>
-            <clr-icon *ngIf="!isLoading" shape="check" style="margin-right: 0.5rem;"></clr-icon>
+            <clr-spinner *ngIf="isLoading" clrInline clrSmall class="btn-spinner"></clr-spinner>
+            <clr-icon *ngIf="!isLoading" shape="check" size="16" class="btn-icon"></clr-icon>
             <span *ngIf="!isLoading">Activate Account</span>
             <span *ngIf="isLoading">Activating...</span>
           </button>
-        </form>
 
-        <div class="resend-section">
-          <p class="resend-text">Didn't receive the code?</p>
-          <button type="button" class="btn btn-link resend-btn" (click)="resendCode()">
-            <clr-icon shape="refresh"></clr-icon>
-            Resend Code
-          </button>
+          <!-- Resend Section -->
+          <div class="footer-section">
+            <div class="help-text">
+              <p>Didn't receive the code? 
+                <a href="javascript:void(0)" (click)="resendCode()" class="help-link">Resend Code</a>
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div *ngIf="submitted" class="result-section">
-        <div class="result-icon" [class.success]="isOkay" [class.error]="!isOkay">
-          <clr-icon 
-            [attr.shape]="isOkay ? 'check-circle' : 'exclamation-triangle'"
-            size="72">
-          </clr-icon>
-        </div>
-        
-        <h4 class="result-title" [class.success]="isOkay" [class.error]="!isOkay">
-          {{ isOkay ? 'Account Activated!' : 'Activation Failed' }}
-        </h4>
-        
-        <div class="result-message" [class.success]="isOkay" [class.error]="!isOkay">
-          {{ message }}
-        </div>
-        
-        <div class="result-actions">
-          <button 
-            *ngIf="isOkay"
-            type="button"
-            class="btn btn-primary btn-success"
-            (click)="redirectToLogin()">
-            <clr-icon shape="login" style="margin-right: 0.5rem;"></clr-icon>
-            Continue to Login
-          </button>
+        <!-- Success/Error Result -->
+        <div *ngIf="submitted" class="result-section">
+          <div class="result-icon-wrapper" [class.success]="isOkay" [class.error]="!isOkay">
+            <clr-icon 
+              [attr.shape]="isOkay ? 'check-circle' : 'exclamation-triangle'"
+              size="64"
+              class="result-icon">
+            </clr-icon>
+          </div>
           
-          <button 
-            *ngIf="!isOkay"
-            type="button"
-            class="btn btn-primary"
-            (click)="tryAgain()">
-            <clr-icon shape="refresh" style="margin-right: 0.5rem;"></clr-icon>
-            Try Again
-          </button>
+          <h3 class="result-title" [class.success]="isOkay" [class.error]="!isOkay">
+            {{ isOkay ? 'Account Activated!' : 'Activation Failed' }}
+          </h3>
+          
+          <p class="result-message" [class.success]="isOkay" [class.error]="!isOkay">
+            {{ message }}
+          </p>
+          
+          <div class="result-actions">
+            <button 
+              *ngIf="isOkay"
+              type="button"
+              class="btn btn-primary login-btn"
+              (click)="redirectToLogin()">
+              <clr-icon shape="login" size="16" class="btn-icon"></clr-icon>
+              Continue to Login
+            </button>
+            
+            <button 
+              *ngIf="!isOkay"
+              type="button"
+              class="btn btn-primary login-btn"
+              (click)="tryAgain()">
+              <clr-icon shape="refresh" size="16" class="btn-icon"></clr-icon>
+              Try Again
+            </button>
+          </div>
         </div>
       </div>
     </div>

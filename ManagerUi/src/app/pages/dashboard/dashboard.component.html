@@ -1,0 +1,215 @@
+<div class="dashboard-container">
+  <div class="mmm-header">
+    <h1 class="mmm-title">MMC Manager Dashboard</h1>
+    <p class="mmm-subtitle">Welcome back! Here's what's happening with your system.</p>
+  </div>
+  
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-container">
+    <clr-spinner clrMedium>Loading dashboard data...</clr-spinner>
+  </div>
+
+  <div *ngIf="!loading && !error && dashboardData" class="dashboard-content">
+    <!-- User Statistics -->
+    <div class="stats-section">
+      <h2 class="section-title">User Overview</h2>
+      <div class="stats-grid">
+        <div class="mmm-card stat-card">
+          <div class="stat-icon users">
+            <clr-icon shape="users" size="24"></clr-icon>
+          </div>
+          <div class="stat-content">
+            <h3>{{ dashboardData.totalUsers }}</h3>
+            <p>Total Users</p>
+          </div>
+        </div>
+        
+        <div class="mmm-card stat-card">
+          <div class="stat-icon active">
+            <clr-icon shape="check-circle" size="24"></clr-icon>
+          </div>
+          <div class="stat-content">
+            <h3>{{ dashboardData.activeUsers }}</h3>
+            <p>Active Users</p>
+          </div>
+        </div>
+        
+        <div class="mmm-card stat-card">
+          <div class="stat-icon pending">
+            <clr-icon shape="clock" size="24"></clr-icon>
+          </div>
+          <div class="stat-content">
+            <h3>{{ dashboardData.pendingUsers }}</h3>
+            <p>Pending Users</p>
+          </div>
+        </div>
+        
+        <div class="mmm-card stat-card">
+          <div class="stat-icon blocked">
+            <clr-icon shape="lock" size="24"></clr-icon>
+          </div>
+          <div class="stat-content">
+            <h3>{{ dashboardData.blockedUsers }}</h3>
+            <p>Blocked Users</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Account Statistics -->
+    <div class="stats-section">
+      <h2 class="section-title">Account Overview</h2>
+      <div class="stats-grid">
+        <div class="mmm-card stat-card">
+          <div class="stat-icon accounts">
+            <clr-icon shape="building" size="24"></clr-icon>
+          </div>
+          <div class="stat-content">
+            <h3>{{ dashboardData.totalAccounts }}</h3>
+            <p>Total Accounts</p>
+          </div>
+        </div>
+        
+        <div class="mmm-card stat-card">
+          <div class="stat-icon active-accounts">
+            <clr-icon shape="success-standard" size="24"></clr-icon>
+          </div>
+          <div class="stat-content">
+            <h3>{{ dashboardData.activeAccounts }}</h3>
+            <p>Active Accounts</p>
+          </div>
+        </div>
+        
+        <div class="mmm-card stat-card">
+          <div class="stat-icon disabled-accounts">
+            <clr-icon shape="ban" size="24"></clr-icon>
+          </div>
+          <div class="stat-content">
+            <h3>{{ dashboardData.disabledAccounts }}</h3>
+            <p>Disabled Accounts</p>
+          </div>
+        </div>
+        
+        <div class="mmm-card stat-card">
+          <div class="stat-icon trade-accounts">
+            <clr-icon shape="line-chart" size="24"></clr-icon>
+          </div>
+          <div class="stat-content">
+            <h3>{{ dashboardData.accountsWithTrade }}</h3>
+            <p>Trade Accounts</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visual Charts Section -->
+    <div class="charts-section">
+      <div class="mmm-card chart-container">
+        <h3 class="chart-title">User Distribution</h3>
+        <div class="progress-chart">
+          <div class="progress-item">
+            <div class="progress-info">
+              <span class="progress-label">Active Users</span>
+              <span class="progress-value">{{ dashboardData.activeUsers }}</span>
+            </div>
+            <clr-progress-bar 
+              [clrValue]="getPercentage(dashboardData.activeUsers, dashboardData.totalUsers)"
+              clrColor="success">
+            </clr-progress-bar>
+          </div>
+          <div class="progress-item">
+            <div class="progress-info">
+              <span class="progress-label">Pending Users</span>
+              <span class="progress-value">{{ dashboardData.pendingUsers }}</span>
+            </div>
+            <clr-progress-bar 
+              [clrValue]="getPercentage(dashboardData.pendingUsers, dashboardData.totalUsers)"
+              clrColor="warning">
+            </clr-progress-bar>
+          </div>
+          <div class="progress-item">
+            <div class="progress-info">
+              <span class="progress-label">Blocked Users</span>
+              <span class="progress-value">{{ dashboardData.blockedUsers }}</span>
+            </div>
+            <clr-progress-bar 
+              [clrValue]="getPercentage(dashboardData.blockedUsers, dashboardData.totalUsers)"
+              clrColor="danger">
+            </clr-progress-bar>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mmm-card chart-container">
+        <h3 class="chart-title">Account Status</h3>
+        <div class="progress-chart">
+          <div class="progress-item">
+            <div class="progress-info">
+              <span class="progress-label">Active Accounts</span>
+              <span class="progress-value">{{ dashboardData.activeAccounts }}</span>
+            </div>
+            <clr-progress-bar 
+              [clrValue]="getPercentage(dashboardData.activeAccounts, dashboardData.totalAccounts)"
+              clrColor="success">
+            </clr-progress-bar>
+          </div>
+          <div class="progress-item">
+            <div class="progress-info">
+              <span class="progress-label">Disabled Accounts</span>
+              <span class="progress-value">{{ dashboardData.disabledAccounts }}</span>
+            </div>
+            <clr-progress-bar 
+              [clrValue]="getPercentage(dashboardData.disabledAccounts, dashboardData.totalAccounts)"
+              clrColor="danger">
+            </clr-progress-bar>
+          </div>
+          <div class="progress-item">
+            <div class="progress-info">
+              <span class="progress-label">Trade Accounts</span>
+              <span class="progress-value">{{ dashboardData.accountsWithTrade }}</span>
+            </div>
+            <clr-progress-bar 
+              [clrValue]="getPercentage(dashboardData.accountsWithTrade, dashboardData.totalAccounts)"
+              clrColor="info">
+            </clr-progress-bar>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="actions-section">
+      <h2 class="section-title">Quick Actions</h2>
+      <div class="mmm-card actions-grid">
+        <button class="mmm-button mmm-button-primary" (click)="navigateTo('/users')">
+          <clr-icon shape="users"></clr-icon>
+          Manage Users
+        </button>
+        <button class="mmm-button mmm-button-secondary" (click)="navigateTo('/accounts')">
+          <clr-icon shape="building"></clr-icon>
+          Manage Accounts
+        </button>
+        <button class="mmm-button mmm-button-outline" (click)="navigateTo('/settings')">
+          <clr-icon shape="cog"></clr-icon>
+          System Settings
+        </button>
+        <button class="mmm-button mmm-button-outline" (click)="refreshData()">
+          <clr-icon shape="refresh"></clr-icon>
+          Refresh Data
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!loading && error" class="mmm-card error-state">
+    <div class="mmm-alert mmm-alert-error">
+      <clr-icon shape="exclamation-triangle"></clr-icon>
+      <span>{{ error }}</span>
+    </div>
+    <button class="mmm-button mmm-button-primary" (click)="loadDashboardData()">
+      <clr-icon shape="refresh"></clr-icon>
+      Retry
+    </button>
+  </div>
+</div>

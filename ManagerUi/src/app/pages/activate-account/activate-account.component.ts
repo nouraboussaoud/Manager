@@ -19,58 +19,74 @@ export class ActivateAccountComponent {
   submitted = false;
   isLoading = false;
   token = '';
+  errorMsg: string[] = [];
 
   constructor(
     private router: Router,
-    private authService: AuthService // Use AuthService
+    private authService: AuthService
   ) {}
 
+  onCodeInput() {
+    // Clear errors when user starts typing
+    this.errorMsg = [];
+  }
+
   onCodeCompleted() {
-    console.log('Code completed, token length:', this.token.length, 'Token:', this.token); // Debug
     if (this.token.length === 6) {
       this.confirmAccount(this.token);
-    } else {
-      console.log('Token length is not 6, current length:', this.token.length); // Debug
     }
   }
 
   confirmAccount(token: string) {
     this.isLoading = true;
-    this.submitted = false; // Reset submitted state
-    
-    console.log('Attempting to activate account with token:', token); // Debug log
+    this.submitted = false;
+    this.errorMsg = [];
     
     this.authService.activateAccount(token).subscribe({
       next: (response) => {
-        console.log('Activation successful:', response); // Debug log
-        this.message = 'Account activated successfully!';
+        this.message = 'Account activated successfully! You can now sign in.';
         this.isOkay = true;
         this.isLoading = false;
-        this.submitted = true; // Show result section
+        this.submitted = true;
       },
       error: (error) => {
-        console.error('Activation failed:', error); // Debug log
-        this.message = 'Activation failed. Please check your code and try again.';
-        this.isOkay = false;
         this.isLoading = false;
-        this.submitted = true; // Show result section
+        this.handleActivationError(error);
       }
     });
   }
 
-  redirectToLogin() {
-    this.router.navigate(['login']);
+  private handleActivationError(error: any) {
+    if (error.status === 400) {
+      this.errorMsg = ['Invalid or expired verification code.'];
+    } else if (error.status === 404) {
+      this.errorMsg = ['Account not found.'];
+    } else if (error.status === 409) {
+      this.errorMsg = ['Account is already activated.'];
+    } else if (error.status === 500) {
+      this.errorMsg = ['Server error. Please try again later.'];
+    } else if (error.status === 0) {
+      this.errorMsg = ['Unable to connect to server. Please check your connection.'];
+    } else {
+      this.errorMsg = ['Activation failed. Please try again.'];
+    }
+  }
+
+  resendCode() {
+    // Add resend logic here if needed
+    this.errorMsg = [];
+    this.token = '';
   }
 
   tryAgain() {
     this.submitted = false;
+    this.errorMsg = [];
     this.token = '';
-    this.message = '';
+    this.isOkay = true;
   }
 
-  resendCode() {
-    // TODO: Implement resend functionality
-    console.log('Resend code functionality to be implemented');
+  redirectToLogin() {
+    this.router.navigate(['/login']);
   }
 }
 

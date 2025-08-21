@@ -1,80 +1,115 @@
-<div class="auth-container">
-  <div class="auth-card">
-    <div class="auth-header">
-      <h3>Welcome Back</h3>
-      <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">Sign in to your account</p>
-    </div>
-    
-    <div class="auth-body">
-      <form clrForm (ngSubmit)="login()" #loginForm="ngForm">
-        <clr-input-container>
-          <label>Email Address</label>
-          <input 
-            clrInput 
-            type="email" 
-            name="email"
-            [(ngModel)]="authRequest.email"
-            required
-            email
-            class="form-control"
-            placeholder="Enter your email"
-            #email="ngModel" />
-          <clr-control-error *clrIfError="'required'">Email is required</clr-control-error>
-          <clr-control-error *clrIfError="'email'">Please enter a valid email</clr-control-error>
-        </clr-input-container>
+<div class="login-container">
+  <div class="login-wrapper">
+    <div class="login-card">
+      <form clrForm class="login-form" (ngSubmit)="login()" #loginForm="ngForm">
+        <!-- Header Section -->
+        <div class="header-section">
+          <div class="logo-container">
+            <div class="logo-icon">
+              <clr-icon shape="shield" size="32"></clr-icon>
+            </div>
+          </div>
+          <h1 class="brand-title">MMC Manager</h1>
+          <div class="divider"></div>
+        </div>
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <div class="password-input">
-            <input
-              [type]="showPassword ? 'text' : 'password'"
-              id="password"
-              name="password"
-              [(ngModel)]="authRequest.password"
-              class="form-control"
-              placeholder="Enter your password"
-              required
-              #password="ngModel"
-            />
-            <button
-              type="button"
-              class="password-toggle"
-              (click)="showPassword = !showPassword"
-              [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
-            >
-              <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+        <!-- Error Alert -->
+        <div 
+          *ngIf="errorMsg.length > 0" 
+          class="custom-alert alert-danger">
+          <div class="alert-content">
+            <clr-icon shape="exclamation-triangle" class="alert-icon"></clr-icon>
+            <div class="alert-messages">
+              <div *ngFor="let error of errorMsg" class="alert-message">
+                {{ error }}
+              </div>
+            </div>
+            <button 
+              type="button" 
+              class="alert-close"
+              (click)="errorMsg = []; showGeneralError = false"
+              aria-label="Close alert">
+              <clr-icon shape="times"></clr-icon>
             </button>
           </div>
-          <div *ngIf="password.invalid && password.touched" class="error-message">
-            Password is required
+        </div>
+
+        <!-- Form Fields -->
+        <div class="form-section">
+          <!-- Email Input -->
+          <clr-input-container [class.clr-error]="emailTouched && getEmailError()">
+            <label>Email Address</label>
+            <input 
+              clrInput 
+              type="email" 
+              name="email"
+              [(ngModel)]="authRequest.email"
+              required
+              placeholder="Enter your email address"
+              #email="ngModel" 
+              autocomplete="email"
+              (blur)="onEmailBlur()"
+              [class.invalid]="emailTouched && getEmailError()" />
+            <clr-control-error *ngIf="emailTouched && getEmailError()">
+              {{ getEmailError() }}
+            </clr-control-error>
+          </clr-input-container>
+
+          <!-- Password Input -->
+          <div class="password-field" [class.clr-error]="passwordTouched && getPasswordError()">
+            <label>Password</label>
+            <div class="password-wrapper">
+              <input 
+                [type]="showPassword ? 'text' : 'password'"
+                name="password"
+                [(ngModel)]="authRequest.password"
+                required
+                placeholder="Enter your password"
+                #password="ngModel"
+                autocomplete="current-password"
+                (blur)="onPasswordBlur()"
+                [class.invalid]="passwordTouched && getPasswordError()"
+                class="password-input" />
+              <button 
+                type="button"
+                class="eye-button"
+                (click)="togglePasswordVisibility()"
+                [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+                <svg *ngIf="!showPassword" class="eye-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z" stroke="currentColor" stroke-width="2"/>
+                  <path d="M2.45801 12.2176C2.15344 11.7492 2.15344 11.2508 2.45801 10.7824C4.0781 8.14676 7.7063 4 12 4C16.2937 4 19.9219 8.14676 21.542 10.7824C21.8466 11.2508 21.8466 11.7492 21.542 12.2176C19.9219 14.8532 16.2937 19 12 19C7.7063 19 4.0781 14.8532 2.45801 12.2176Z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <svg *ngIf="showPassword" class="eye-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10.7429 5.09232C11.1494 5.03223 11.5686 5 12.0004 5C17.1054 5 20.4553 9.50484 21.5807 11.2868C21.7169 11.5025 21.7169 11.7975 21.5807 12.0132C20.8777 13.1737 19.8552 14.5942 18.4323 15.7773M9.8778 9.87781C9.33103 10.4246 9 11.1736 9 12C9 13.6569 10.3431 15 12 15C12.8264 15 13.5754 14.669 14.1222 14.1222M9.8778 9.87781L14.1222 14.1222M9.8778 9.87781L6.96927 6.96927M14.1222 14.1222L17.0307 17.0307M6.96927 6.96927C5.0521 8.39114 3.80422 10.6669 2.41931 12.0132C2.28309 12.2289 2.28309 12.524 2.41931 12.7398C3.54471 14.5217 6.89462 19.0165 12.0004 19.0165C13.9588 19.0165 15.7705 18.2098 17.0307 17.0307M6.96927 6.96927L3 3M17.0307 17.0307L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </div>
+            <div *ngIf="passwordTouched && getPasswordError()" class="error-text">
+              {{ getPasswordError() }}
+            </div>
           </div>
         </div>
 
-        <div *ngIf="errorMsg.length > 0" class="custom-alert alert-danger">
-          <div *ngFor="let error of errorMsg">
-            <clr-icon shape="exclamation-triangle"></clr-icon>
-            {{ error }}
-          </div>
-        </div>
-
+        <!-- Submit Button -->
         <button 
           type="submit" 
-          class="btn btn-primary btn-block"
-          [class.loading-overlay]="isLoading"
-          [disabled]="loginForm.invalid || isLoading">
-          <clr-spinner *ngIf="isLoading" clrInline clrSmall></clr-spinner>
+          class="btn btn-primary login-btn"
+          [disabled]="!isFormValid() || isLoading">
+          <clr-spinner *ngIf="isLoading" clrInline clrSmall class="btn-spinner"></clr-spinner>
+          <clr-icon *ngIf="!isLoading" shape="login" size="16" class="btn-icon"></clr-icon>
           <span *ngIf="!isLoading">Sign In</span>
-          <span *ngIf="isLoading">Signing In...</span>
+          <span *ngIf="isLoading">Authenticating...</span>
         </button>
-      </form>
 
-      <div class="text-center mt-2">
-        <p>Don't have an account? 
-          <a href="javascript:void(0)" (click)="register()" class="auth-link">Create one here</a>
-        </p>
-      </div>
+        <!-- Footer Section -->
+        <div class="footer-section">
+          <div class="help-text">
+            <p>Need access to the system? 
+              <a href="javascript:void(0)" (click)="register()" class="help-link">Request Account</a>
+            </p>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>
-
-
