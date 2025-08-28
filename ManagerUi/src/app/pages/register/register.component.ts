@@ -32,19 +32,17 @@ export class RegisterComponent {
   isLoading = false;
   showPassword = false;
   showGeneralError = false;
-  
-  // Form validation tracking
   firstnameTouched = false;
   lastnameTouched = false;
   emailTouched = false;
   passwordTouched = false;
 
-  constructor(
-    private router: Router,
-    private authService: AuthService
-  ) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
-  // Form validation methods
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
   onFirstnameBlur() {
     this.firstnameTouched = true;
   }
@@ -102,31 +100,22 @@ export class RegisterComponent {
     return null;
   }
 
-  isFormValid(): boolean {
-    return this.getFirstnameError() === null &&
-           this.getLastnameError() === null &&
-           this.getEmailError() === null &&
-           this.getPasswordError() === null &&
-           this.registerRequest.firstname?.trim() !== '' &&
-           this.registerRequest.lastname?.trim() !== '' &&
-           this.registerRequest.email?.trim() !== '' &&
-           this.registerRequest.password !== '';
+  login() {
+    this.router.navigate(['login']);
   }
 
-  togglePasswordVisibility() {
-    this.showPassword = !this.showPassword;
+  isFormValid(): boolean {
+    return (
+      !!this.registerRequest.firstname.trim() &&
+      !!this.registerRequest.lastname.trim() &&
+      !!this.registerRequest.email.trim() &&
+      this.registerRequest.password.length >= 12
+    );
   }
 
   register() {
     this.errorMsg = [];
-    this.showGeneralError = false;
     this.isLoading = true;
-
-    // Mark all fields as touched for validation
-    this.firstnameTouched = true;
-    this.lastnameTouched = true;
-    this.emailTouched = true;
-    this.passwordTouched = true;
 
     if (!this.isFormValid()) {
       this.isLoading = false;
@@ -134,11 +123,11 @@ export class RegisterComponent {
     }
 
     this.authService.register(this.registerRequest).subscribe({
-      next: (response: any) => {
+      next: () => {
         this.isLoading = false;
         this.router.navigate(['activate-account']);
       },
-      error: (error: any) => {
+      error: (error) => {
         this.isLoading = false;
         this.handleRegistrationError(error);
       }
@@ -146,27 +135,13 @@ export class RegisterComponent {
   }
 
   private handleRegistrationError(error: any) {
-    this.showGeneralError = true;
-
-    if (error.status === 409 || (error.error?.error && error.error.error.includes('duplicate key'))) {
+    if (error.status === 409) {
       this.errorMsg = ['An account with this email address already exists.'];
-    } else if (error.error?.businessErrorDescription) {
-      this.errorMsg = [error.error.businessErrorDescription];
-    } else if (error.error?.validationErrors && Array.isArray(error.error.validationErrors)) {
-      this.errorMsg = error.error.validationErrors;
     } else if (error.status === 400) {
       this.errorMsg = ['Please check your information and try again.'];
-    } else if (error.status === 500) {
-      this.errorMsg = ['Server error. Please try again later.'];
-    } else if (error.status === 0) {
-      this.errorMsg = ['Unable to connect to server. Please check your connection.'];
     } else {
       this.errorMsg = ['Registration failed. Please try again later.'];
     }
-  }
-
-  login() {
-    this.router.navigate(['login']);
   }
 }
 

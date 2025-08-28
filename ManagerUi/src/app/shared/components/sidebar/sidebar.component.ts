@@ -113,8 +113,8 @@ import { Router, RouterModule } from '@angular/router';
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid #f1f5f9;
-      background: #fafbfc;
+      border-bottom: 1px solid #e5e7eb;
+      background: #ffffff; /* Soft white background */
     }
     
     .logo-container {
@@ -129,7 +129,7 @@ import { Router, RouterModule } from '@angular/router';
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #3b82f6;
+      background: #007bff; /* Updated to match the app's blue color */
       border-radius: 10px;
       color: white;
       font-size: 18px;
@@ -202,7 +202,8 @@ import { Router, RouterModule } from '@angular/router';
     }
     
     .nav-link:hover {
-      background: #f1f5f9;
+      background: #007bff; /* Updated hover color */
+      color: white;
     }
     
     .nav-link:hover .nav-icon {

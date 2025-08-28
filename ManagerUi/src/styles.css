@@ -304,23 +304,21 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
+  background-color: #1a237e !important;
+  color: white !important;
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  background-color: #000051 !important;
 }
 
 .btn-secondary {
-  background: #6c757d;
-  color: white;
+  background-color: #00695c !important;
+  color: white !important;
 }
 
 .btn-secondary:hover {
-  background: #5a6268;
-  transform: translateY(-2px);
+  background-color: #003d33 !important;
 }
 
 /* Card Styling */

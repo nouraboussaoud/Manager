@@ -29,15 +29,8 @@ interface User {
   template: `
     <div class="users-container">
       <div class="page-header">
-        <div class="header-content">
-          <h1>User Management</h1>
-          <p>Manage your organization's users</p>
-        </div>
+
         <div class="header-actions">
-          <button class="btn btn-primary" (click)="openCreateModal()">
-            <i class="fas fa-plus"></i>
-            Add New User
-          </button>
         </div>
       </div>
       
@@ -52,24 +45,10 @@ interface User {
             class="search-input">
         </div>
         
-        <div class="filter-tabs">
-          <button 
-            class="filter-tab" 
-            [class.active]="activeFilter === 'all'"
-            (click)="setFilter('all')">
-            All Users ({{ users.length }})
-          </button>
-          <button 
-            class="filter-tab" 
-            [class.active]="activeFilter === 'active'"
-            (click)="setFilter('active')">
-            Active ({{ getActiveCount() }})
-          </button>
-          <button 
-            class="filter-tab" 
-            [class.active]="activeFilter === 'inactive'"
-            (click)="setFilter('inactive')">
-            Inactive ({{ getInactiveCount() }})
+        <div class="add-user-button">
+          <button class="btn btn-primary" (click)="openCreateModal()">
+            <i class="fas fa-plus"></i>
+            Add New User
           </button>
         </div>
       </div>
@@ -183,6 +162,28 @@ interface User {
       border: 1px solid #e9ecef;
       border-radius: 6px;
       font-size: 14px;
+    }
+    
+    .add-user-button {
+      display: flex;
+      align-items: center;
+    }
+    
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 16px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .btn-primary:hover {
+      background: #0056b3;
     }
     
     .filter-tabs {

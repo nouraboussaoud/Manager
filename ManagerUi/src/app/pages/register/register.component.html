@@ -1,7 +1,7 @@
-<div class="login-container">
-  <div class="login-wrapper">
-    <div class="login-card">
-      <form clrForm class="login-form" (ngSubmit)="register()" #registerForm="ngForm">
+<div class="register-container">
+  <div class="register-wrapper">
+    <div class="register-card">
+      <form clrForm class="register-form" (ngSubmit)="register()" #registerForm="ngForm">
         <!-- Header Section -->
         <div class="header-section">
           <div class="logo-container">
@@ -11,7 +11,6 @@
           </div>
           <h1 class="brand-title">MMC Manager</h1>
           <div class="divider"></div>
-          <p class="subtitle">Create your account</p>
         </div>
 
         <!-- Error Alert -->
@@ -37,48 +36,47 @@
 
         <!-- Form Fields -->
         <div class="form-section">
-          <!-- Name Row -->
-          <div class="name-row">
-            <!-- First Name Input -->
-            <clr-input-container [class.clr-error]="firstnameTouched && getFirstnameError()">
-              <label>First Name</label>
-              <input 
-                clrInput 
-                type="text" 
-                name="firstname"
-                [(ngModel)]="registerRequest.firstname"
-                required
-                placeholder="Enter your first name"
-                #firstname="ngModel" 
-                (blur)="onFirstnameBlur()"
-                [class.invalid]="firstnameTouched && getFirstnameError()" />
-              <clr-control-error *ngIf="firstnameTouched && getFirstnameError()">
-                {{ getFirstnameError() }}
-              </clr-control-error>
-            </clr-input-container>
+          <!-- First Name Input -->
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input 
+              clrInput 
+              type="text" 
+              name="firstname"
+              [(ngModel)]="registerRequest.firstname"
+              required
+              placeholder="Enter your first name"
+              #firstname="ngModel" 
+              (blur)="onFirstnameBlur()"
+              [class.invalid]="firstnameTouched && getFirstnameError()"
+              class="form-control" />
+            <clr-control-error *ngIf="firstnameTouched && getFirstnameError()">
+              {{ getFirstnameError() }}
+            </clr-control-error>
+          </div>
 
-            <!-- Last Name Input -->
-            <clr-input-container [class.clr-error]="lastnameTouched && getLastnameError()">
-              <label>Last Name</label>
-              <input 
-                clrInput 
-                type="text" 
-                name="lastname"
-                [(ngModel)]="registerRequest.lastname"
-                required
-                placeholder="Enter your last name"
-                #lastname="ngModel" 
-                (blur)="onLastnameBlur()"
-                [class.invalid]="lastnameTouched && getLastnameError()" />
-              <clr-control-error *ngIf="lastnameTouched && getLastnameError()">
-                {{ getLastnameError() }}
-              </clr-control-error>
-            </clr-input-container>
+          <!-- Last Name Input -->
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input 
+              clrInput 
+              type="text" 
+              name="lastname"
+              [(ngModel)]="registerRequest.lastname"
+              required
+              placeholder="Enter your last name"
+              #lastname="ngModel" 
+              (blur)="onLastnameBlur()"
+              [class.invalid]="lastnameTouched && getLastnameError()"
+              class="form-control" />
+            <clr-control-error *ngIf="lastnameTouched && getLastnameError()">
+              {{ getLastnameError() }}
+            </clr-control-error>
           </div>
 
           <!-- Email Input -->
-          <clr-input-container [class.clr-error]="emailTouched && getEmailError()">
-            <label>Email Address</label>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
             <input 
               clrInput 
               type="email" 
@@ -89,15 +87,16 @@
               #email="ngModel" 
               autocomplete="email"
               (blur)="onEmailBlur()"
-              [class.invalid]="emailTouched && getEmailError()" />
+              [class.invalid]="emailTouched && getEmailError()"
+              class="form-control" />
             <clr-control-error *ngIf="emailTouched && getEmailError()">
               {{ getEmailError() }}
             </clr-control-error>
-          </clr-input-container>
+          </div>
 
           <!-- Password Input -->
-          <div class="password-field" [class.clr-error]="passwordTouched && getPasswordError()">
-            <label>Password</label>
+          <div class="form-group">
+            <label class="form-label">Password</label>
             <div class="password-wrapper">
               <input 
                 [type]="showPassword ? 'text' : 'password'"
@@ -105,39 +104,31 @@
                 [(ngModel)]="registerRequest.password"
                 required
                 minlength="12"
-                placeholder="Create a strong password (min 12 characters)"
+                placeholder="Create a strong password"
                 #password="ngModel"
                 autocomplete="new-password"
                 (blur)="onPasswordBlur()"
                 [class.invalid]="passwordTouched && getPasswordError()"
-                class="password-input" />
+                class="form-control" />
               <button 
                 type="button"
                 class="eye-button"
                 (click)="togglePasswordVisibility()"
                 [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
-                <svg *ngIf="!showPassword" class="eye-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z" stroke="currentColor" stroke-width="2"/>
-                  <path d="M2.45801 12.2176C2.15344 11.7492 2.15344 11.2508 2.45801 10.7824C4.0781 8.14676 7.7063 4 12 4C16.2937 4 19.9219 8.14676 21.542 10.7824C21.8466 11.2508 21.8466 11.7492 21.542 12.2176C19.9219 14.8532 16.2937 19 12 19C7.7063 19 4.0781 14.8532 2.45801 12.2176Z" stroke="currentColor" stroke-width="2"/>
-                </svg>
-                <svg *ngIf="showPassword" class="eye-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10.7429 5.09232C11.1494 5.03223 11.5686 5 12.0004 5C17.1054 5 20.4553 9.50484 21.5807 11.2868C21.7169 11.5025 21.7169 11.7975 21.5807 12.0132C20.8777 13.1737 19.8552 14.5942 18.4323 15.7773M9.8778 9.87781C9.33103 10.4246 9 11.1736 9 12C9 13.6569 10.3431 15 12 15C12.8264 15 13.5754 14.669 14.1222 14.1222M9.8778 9.87781L14.1222 14.1222M9.8778 9.87781L6.96927 6.96927M14.1222 14.1222L17.0307 17.0307M6.96927 6.96927C5.0521 8.39114 3.80422 10.6669 2.41931 12.0132C2.28309 12.2289 2.28309 12.524 2.41931 12.7398C3.54471 14.5217 6.89462 19.0165 12.0004 19.0165C13.9588 19.0165 15.7705 18.2098 17.0307 17.0307M6.96927 6.96927L3 3M17.0307 17.0307L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
+                <clr-icon *ngIf="!showPassword" shape="eye"></clr-icon>
+                <clr-icon *ngIf="showPassword" shape="eye-hide"></clr-icon>
               </button>
             </div>
-            <div *ngIf="passwordTouched && getPasswordError()" class="error-text">
+            <clr-control-error *ngIf="passwordTouched && getPasswordError()">
               {{ getPasswordError() }}
-            </div>
-            <div class="password-requirements">
-              <p>Password must be at least 12 characters long</p>
-            </div>
+            </clr-control-error>
           </div>
         </div>
 
         <!-- Submit Button -->
         <button 
           type="submit" 
-          class="btn btn-primary login-btn"
+          class="btn btn-primary register-btn"
           [disabled]="!isFormValid() || isLoading">
           <clr-spinner *ngIf="isLoading" clrInline clrSmall class="btn-spinner"></clr-spinner>
           <clr-icon *ngIf="!isLoading" shape="user-plus" size="16" class="btn-icon"></clr-icon>
@@ -157,6 +148,45 @@
     </div>
   </div>
 </div>
+
+<style>
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-label {
+    display: inline-block;
+    white-space: nowrap;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+
+  .form-control {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .password-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  .eye-button {
+    margin-left: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .form-group .clr-control-error {
+    color: red !important; /* Force error messages to appear in red */
+    font-size: 0.875rem;
+    font-weight: bold;
+  }
+</style>
 
 
 

@@ -27,6 +27,7 @@
     "@clr/angular": "^17.10.0",
     "@clr/icons": "^13.0.2",
     "@clr/ui": "^17.10.0",
+    "chart.js": "^4.5.0",
     "clarity-icons": "^0.10.28",
     "express": "^4.18.2",
     "rxjs": "~7.8.0",

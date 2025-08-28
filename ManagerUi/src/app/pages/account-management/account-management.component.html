@@ -4,12 +4,12 @@
     <div class="header-actions">
       <button 
         (click)="showSefClientsList()" 
-        class="btn btn-info"
+        class="btn btn-primary"
         [class.active]="showSefClients"
       >
         SEF Clients ({{ sefClients.length }})
       </button>
-      <button (click)="loadAllAccounts()" class="btn btn-secondary">
+      <button (click)="loadAllAccounts()" class="btn btn-primary">
         Refresh
       </button>
     </div>
@@ -78,7 +78,7 @@
         <button 
           *ngIf="selectedAccount" 
           (click)="clearSelection()" 
-          class="btn btn-secondary btn-sm"
+          class="btn btn-primary btn-sm"
         >
           Clear Selection
         </button>
@@ -378,7 +378,7 @@
             <button type="submit" class="btn btn-primary" [disabled]="!sefForm.form.valid">
               Add to SEF
             </button>
-            <button type="button" (click)="cancelSefForm()" class="btn btn-secondary">
+            <button type="button" (click)="cancelSefForm()" class="btn btn-primary">
               Cancel
             </button>
           </div>
@@ -390,7 +390,7 @@
     <div class="sef-clients-panel" *ngIf="showSefClients">
       <div class="panel-header">
         <h3>SEF Clients ({{ sefClients.length }})</h3>
-        <button (click)="clearSelection()" class="btn btn-secondary">
+        <button (click)="clearSelection()" class="btn btn-primary">
           Back to Accounts
         </button>
       </div>

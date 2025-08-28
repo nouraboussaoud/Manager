@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@cds/core": "^6.16.1",
+    "@clr/angular": "^17.11.1"
+  }
+}

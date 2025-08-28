@@ -115,6 +115,29 @@ interface User {
     </form>
   `,
   styles: [`
+    :host {
+      /* Color Palette */
+      --primary-color: #1a237e;
+      --primary-light: #3949ab;
+      --primary-dark: #000051;
+      --secondary-color: #00695c;
+      --secondary-light: #009688;
+      --accent-color: #ff6f00;
+      --accent-light: #ff9800;
+  
+      /* Neutral Colors */
+      --surface-color: #ffffff;
+      --background-color: #f8fafc;
+      --card-background: #ffffff;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-light: #94a3b8;
+      --border-color: #e2e8f0;
+      --border-light: #f1f5f9;
+  
+      /* Shadow System */
+    }
+    
     .form-group {
       margin-bottom: 20px;
     }
@@ -123,13 +146,13 @@ interface User {
       display: block;
       margin-bottom: 8px;
       font-weight: 500;
-      color: #2c3e50;
+      color: var(--text-primary);
     }
     
     .form-control {
       width: 100%;
       padding: 12px 16px;
-      border: 1px solid #e9ecef;
+      border: 1px solid var(--border-color);
       border-radius: 8px;
       font-size: 1rem;
       transition: border-color 0.3s, box-shadow 0.3s;
@@ -137,7 +160,7 @@ interface User {
     
     .form-control:focus {
       outline: none;
-      border-color: #667eea;
+      border-color: var(--primary-light);
       box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
     
@@ -174,7 +197,7 @@ interface User {
       height: 22px;
       width: 22px;
       background-color: #fff;
-      border: 2px solid #e9ecef;
+      border: 2px solid var(--border-color);
       border-radius: 4px;
       margin-right: 10px;
       position: relative;
@@ -182,12 +205,12 @@ interface User {
     }
     
     .checkbox-container:hover input ~ .checkmark {
-      border-color: #667eea;
+      border-color: var(--primary-light);
     }
     
     .checkbox-container input:checked ~ .checkmark {
-      background-color: #667eea;
-      border-color: #667eea;
+      background-color: var(--primary-light);
+      border-color: var(--primary-light);
     }
     
     .checkmark:after {
@@ -212,7 +235,7 @@ interface User {
     
     .checkbox-label {
       font-size: 1rem;
-      color: #2c3e50;
+      color: var(--text-primary);
     }
     
     .alert-error {
@@ -250,28 +273,29 @@ interface User {
     }
     
     .btn-primary {
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background-color: #007bff;
+      border: none;
       color: white;
+      transition: background-color 0.3s ease;
     }
     
     .btn-primary:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+      background-color: #0056b3;
     }
     
     .btn-primary:disabled {
-      opacity: 0.7;
+      background-color: #cce5ff;
       cursor: not-allowed;
     }
     
     .btn-secondary {
       background: #f8f9fa;
       color: #6c757d;
-      border: 1px solid #e9ecef;
+      border: 1px solid var(--border-color);
     }
     
     .btn-secondary:hover {
-      background: #e9ecef;
+      background: var(--border-light);
     }
   `]
 })

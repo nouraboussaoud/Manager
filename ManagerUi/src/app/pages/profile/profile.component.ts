@@ -12,7 +12,7 @@ import { IntegratedAccountService } from '../../services/integrated-account.serv
       <div class="header">
         <h1>User Profile</h1>
       </div>
-      
+
       <!-- Loading Spinner -->
       <div *ngIf="loading" class="loading">
         <div class="spinner"></div>
@@ -24,7 +24,7 @@ import { IntegratedAccountService } from '../../services/integrated-account.serv
         <span>{{ error }}</span>
         <button (click)="clearError()" class="close-btn">&times;</button>
       </div>
-      
+
       <div class="content" *ngIf="!loading && currentUser">
         <!-- Profile Information Card -->
         <div class="profile-card">
@@ -81,38 +81,146 @@ import { IntegratedAccountService } from '../../services/integrated-account.serv
   styles: [`
     .profile-container {
       padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
     }
-    
+
     .header {
       margin-bottom: 30px;
+      text-align: center;
     }
-    
+
     .header h1 {
       color: #1f2937;
       font-size: 28px;
       font-weight: 700;
       margin: 0;
     }
-    
+
     .profile-card {
       background: white;
       border-radius: 12px;
       padding: 30px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+      margin-bottom: 20px;
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .profile-avatar {
+      font-size: 60px;
+      color: #6b7280;
+    }
+
+    .profile-title h2 {
+      color: #374151;
+      font-size: 24px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .profile-title p {
+      color: #6b7280;
+      margin: 5px 0;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status-badge.enabled {
+      background-color: #22c55e;
+      color: white;
+    }
+
+    .status-badge.disabled {
+      background-color: #ef4444;
+      color: white;
+    }
+
+    .info-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       border: 1px solid #e5e7eb;
     }
-    
-    .profile-info h2 {
-      color: #374151;
+
+    .info-card h3 {
+      color: #1f2937;
       font-size: 20px;
       font-weight: 600;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
-    
-    .profile-info p {
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .info-item label {
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .info-item span {
       color: #6b7280;
-      line-height: 1.6;
-      margin-bottom: 10px;
+    }
+
+    .loading {
+      text-align: center;
+      margin: 50px 0;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #e5e7eb;
+      border-top: 4px solid #3b82f6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .error-message {
+      background: #fef2f2;
+      color: #b91c1c;
+      padding: 15px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 20px;
+      color: #b91c1c;
+      cursor: pointer;
     }
   `]
 })
