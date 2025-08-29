@@ -62,4 +62,20 @@
   "user_name" : "nour nourrrr",
   "created_date" : [ 2025, 8, 27, 11, 40, 12, 744823400 ],
   "last_modified_date" : [ 2025, 8, 27, 11, 40, 12, 744823400 ]
+}, {
+  "libcli" : "abc",
+  "identite" : "12121212",
+  "trade" : 500,
+  "adress" : "test",
+  "cloture" : true,
+  "disabled" : true,
+  "localcli" : null,
+  "cod_cli" : 225252,
+  "ind_societe" : "SARL",
+  "chef_file" : "test",
+  "keycloak_user_id" : "79d2fed9-f95c-41e7-87d9-b7698b89d2d3",
+  "user_email" : "aaab@aaab.com",
+  "user_name" : "aaa aaaa",
+  "created_date" : [ 2025, 8, 29, 9, 33, 1, 457867800 ],
+  "last_modified_date" : [ 2025, 8, 29, 9, 33, 1, 457867800 ]
 } ]
